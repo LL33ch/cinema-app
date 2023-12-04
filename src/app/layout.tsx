@@ -29,6 +29,42 @@ export const metadata: Metadata = {
   description: 'cinema-next-app',
 }
 
+const navbarLinks = [
+  {
+    id: 1,
+    href: "/",
+    label: "Главная"
+  },
+  {
+    id: 2,
+    href: "/movies",
+    label: "Фильмы"
+  },
+  {
+    id: 3,
+    href: "/serials",
+    label: "Сериалы"
+  }
+];
+
+const Navbar = (props: any) => {
+  const [SheetCloseWrapper, shetCloseWrapperProps] = props.withSheetClose
+    ? [SheetClose, { asChild: true }]
+    : [React.Fragment, {}];
+
+  return (
+    <div className='flex flex-col space-y-3 font-medium mt-5 pb-10 pl-6'>
+      {navbarLinks.map((item) => (
+        <SheetCloseWrapper {...shetCloseWrapperProps} key={item.id}>
+          <Link key={item.id} href={item.href}>
+            {item.label}
+          </Link>
+        </SheetCloseWrapper>
+      ))}
+    </div>
+  );
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -75,19 +111,7 @@ export default function RootLayout({
               <Sheet>
                 <SheetTrigger className='md:hidden w-fit' asChild><Button variant="outline"><AlignJustify /></Button></SheetTrigger>
                 <SheetContent side={'left'} >
-                  <SheetHeader>
-                    <SheetDescription className='mt-50'>
-                      <Link href="/" legacyBehavior passHref>
-                        <Button type='submit' className='w-full' variant="link" size="icon"><Home className="mr-2 h-4 w-4" /> Главная</Button>
-                      </Link>
-                      <Link href="/movies" legacyBehavior passHref>
-                        <Button className='w-full' variant="link"><Film className="mr-2 h-4 w-4" /> Фильмы</Button>
-                      </Link>
-                      <Link href="/serials" legacyBehavior passHref>
-                        <Button className='w-full' variant="link"><Film className="mr-2 h-4 w-4" /> Сериалы</Button>
-                      </Link>
-                    </SheetDescription>
-                  </SheetHeader>
+                  <Navbar withSheetClose />
                 </SheetContent>
               </Sheet>
               <div className='flex'>

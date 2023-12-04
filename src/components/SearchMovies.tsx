@@ -52,7 +52,7 @@ const SearchMovie = () => {
 	};
 
 	return (
-		<Dialog open={isOpen} onOpenChange={() => setIsOpen(true)}>
+		<Dialog>
 			<DialogTrigger asChild><Button className='me-2 border text-muted-foreground' variant="ghost"><Search className="mr-2 h-4 w-4" /> Поиск фильмов и сериалов</Button></DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
@@ -64,14 +64,16 @@ const SearchMovie = () => {
 						{searchResults !== null && searchResults.length > 0 ? (
 							<ScrollArea className="h-[300px] w-full border rounded-md mt-3 p-4">
 								{searchResults.map((movie) => (
-									<Link href={`/movie/${movie.filmId}`} key={movie.filmId} onClick={() => setIsOpen(false)}>
-										<div className="grid grid-cols-[auto,auto,1fr] mb-2 p-2 hover:bg-muted/50">
-											<div>
-												<Image src={movie.posterUrl} width={32} height={48} alt={movie.nameRu} />
+									<DialogTrigger asChild key={movie.filmId}>
+										<Link href={`/movie/${movie.filmId}`} onClick={() => setIsOpen(false)}>
+											<div className="grid grid-cols-[auto,auto,1fr] mb-2 p-2 hover:bg-muted/50">
+												<div>
+													<Image src={movie.posterUrl} width={32} height={48} alt={movie.nameRu} />
+												</div>
+												<div className='ms-2'><span className='font-medium'>{movie.nameRu}</span> <span>({movie.year})</span><br />{movie.rating ? movie.rating : ''}</div>
 											</div>
-											<div className='ms-2'><span className='font-medium'>{movie.nameRu}</span> <span>({movie.year})</span><br />{movie.rating ? movie.rating : ''}</div>
-										</div>
-									</Link>
+										</Link>
+									</DialogTrigger>
 								))}
 							</ScrollArea>
 						) : null}
