@@ -70,7 +70,7 @@ const Navbar = () => {
   return (
     <div className='grid gap-2'>
       {navbarLinks.map((item) => (
-        <Link key={item.id} href={item.href} target={item.target}>
+        <Link key={item.id} href={item.href}>
           {item.label}
         </Link>
       ))}

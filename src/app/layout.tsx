@@ -8,14 +8,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-
 import { ModeToggle } from '@/components/ui/ModeToggle'
 import { Button } from '@/components/ui/button'
 import { AlignJustify, Film } from 'lucide-react'
