@@ -18,7 +18,6 @@ import { Search } from 'lucide-react';
 const SearchMovie = () => {
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const [searchResults, setSearchResults] = useState<Movie[]>([]);
-	const [isOpen, setIsOpen] = useState(false);
 
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
@@ -60,18 +59,19 @@ const SearchMovie = () => {
 				</DialogHeader>
 				<div>
 					<Input value={searchTerm} onChange={handleChange} className='' placeholder="Поиск по названию" />
-					<div className='grid'>
+					<div>
 						{searchResults !== null && searchResults.length > 0 ? (
 							<ScrollArea className="h-[300px] w-full border rounded-md mt-3 p-4">
 								{searchResults.map((movie) => (
-									<DialogTrigger asChild key={movie.filmId}>
-										<Link href={`/movie/${movie.filmId}`} onClick={() => setIsOpen(false)}>
-											<div className="grid grid-cols-[auto,auto,1fr] mb-2 p-2 hover:bg-muted/50">
+									<DialogTrigger asChild key={movie.filmId} className='grid'>
+										<Link key={movie.filmId} href={`/movie/${movie.filmId}`}>
+											<div className="grid grid-cols-[auto,1fr] mb-2 p-2 hover:bg-muted/50">
 												<div>
 													<Image src={movie.posterUrl} width={32} height={48} alt={movie.nameRu} />
 												</div>
 												<div className='ms-2'><span className='font-medium'>{movie.nameRu}</span> <span>({movie.year})</span><br />{movie.rating ? movie.rating : ''}</div>
 											</div>
+
 										</Link>
 									</DialogTrigger>
 								))}

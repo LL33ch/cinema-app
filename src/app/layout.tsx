@@ -18,8 +18,8 @@ import {
 
 import { ModeToggle } from '@/components/ui/ModeToggle'
 import { Button } from '@/components/ui/button'
-import { AlignJustify, Home, Film, Search } from 'lucide-react'
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { AlignJustify, Film } from 'lucide-react'
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import React from 'react'
 import SearchMovie from '@/components/SearchMovies'
 import { Toaster } from 'sonner'
@@ -33,21 +33,30 @@ const navbarLinks = [
   {
     id: 1,
     href: "/",
-    label: "Главная"
+    label: (
+      <Button variant="outline" >
+        <Film className="mr-2 h-4 w-4" /> Cinema-App
+      </Button>),
   },
   {
     id: 2,
     href: "/movies",
-    label: "Фильмы"
+    label: (<Button variant="ghost">Фильмы</Button>)
   },
   {
     id: 3,
     href: "/serials",
-    label: "Сериалы"
+    label: (<Button variant="ghost">Сериалы</Button>)
+  },
+  {
+    id: 4,
+    href: "https://github.com/MrR504/cinema-app",
+    label: (<Button variant="ghost">Github</Button>),
+    target: "_blank"
   }
 ];
 
-const Navbar = (props: any) => {
+const SheetNavbar = (props: any) => {
   const [SheetCloseWrapper, shetCloseWrapperProps] = props.withSheetClose
     ? [SheetClose, { asChild: true }]
     : [React.Fragment, {}];
@@ -60,6 +69,20 @@ const Navbar = (props: any) => {
             {item.label}
           </Link>
         </SheetCloseWrapper>
+      ))}
+    </div>
+  );
+};
+
+const Navbar = () => {
+  return (
+    <div className='flex'>
+      {navbarLinks.map((item) => (
+        <NavigationMenuItem key={item.id}>
+          <Link href={item.href} target={item.target} className='pe-2'>
+            {item.label}
+          </Link>
+        </NavigationMenuItem>
       ))}
     </div>
   );
@@ -84,34 +107,14 @@ export default function RootLayout({
               <div className='mr-4 hidden md:flex'>
                 <NavigationMenu>
                   <NavigationMenuList>
-                    <NavigationMenuItem>
-                      <Link href="/" legacyBehavior passHref>
-                        <Button variant="outline" size="icon">
-                          <Home className="h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                      <NavigationMenuLink>
-                        <Link href="/movies" legacyBehavior passHref>
-                          <Button variant="ghost">Фильмы</Button>
-                        </Link>
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                      <NavigationMenuLink>
-                        <Link href="/serials" legacyBehavior passHref>
-                          <Button variant="ghost">Сериалы</Button>
-                        </Link>
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
+                    <Navbar />
                   </NavigationMenuList>
                 </NavigationMenu>
               </div>
               <Sheet>
                 <SheetTrigger className='md:hidden w-fit' asChild><Button variant="outline"><AlignJustify /></Button></SheetTrigger>
                 <SheetContent side={'left'} >
-                  <Navbar withSheetClose />
+                  <SheetNavbar withSheetClose />
                 </SheetContent>
               </Sheet>
               <div className='flex'>
