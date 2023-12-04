@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { toast } from 'sonner';
 
 interface NotificationComponentProps {
-	type: 'success' | 'error';
+	type: 'default' | 'success' | 'info' | 'error';
 	message: string;
 }
 

@@ -43,7 +43,6 @@ async function getSimilarMoviesData({ params }: { params: { kp_id: number } }) {
 			'Content-Type': 'application/json',
 		},
 	});
-
 	if (!res.ok) {
 		throw new Error('Failed to fetch data');
 	}
@@ -163,12 +162,14 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 					<p>{movie.description}</p>
 				</div>
 				<WatchMovie id={movie.kinopoiskId} />
-				<div className="container mt-5 p-5 backdrop-blur-2xl bg-white/25 dark:bg-zinc-900/50 border rounded-lg">
-					<h2 className='text-lg mb-5 font-medium'>Похожие фильмы</h2>
-					<div className='grid grid-cols-1 md:grid-cols-5 gap-5'>
-						{SimilarMoviesArray}
+				{SimilarMoviesArray.length > 0 ? (
+					<div className="container mt-5 p-5 backdrop-blur-2xl bg-white/25 dark:bg-zinc-900/50 border rounded-lg">
+						<h2 className='text-lg mb-5 font-medium'>Похожие фильмы</h2>
+						<div className='grid grid-cols-1 md:grid-cols-5 gap-5'>
+							{SimilarMoviesArray}
+						</div>
 					</div>
-				</div>
+				) : null}
 				<Image className='absolute top-0 left-1/2 transform -translate-x-1/2 z-[-1] blur-xl opacity-0 dark:opacity-20' src={movie.coverUrl || ''} width={1500} height={1500} alt={movie.nameRu} />
 			</main >
 		);
