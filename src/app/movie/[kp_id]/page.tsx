@@ -18,6 +18,14 @@ import {
 import { Movies } from '@/app/interfaces/similar-movies.interface';
 import WatchMovie from '@/components/WatchMovie';
 import Notification from '@/components/Notification';
+import { Metadata } from 'next';
+
+let dynamicTitle;
+
+export const metadata: Metadata = {
+	title: '', // Установите ваш заголовок по умолчанию
+	description: 'cinema-next-app',
+};
 
 async function getMovieData({ params }: { params: { kp_id: number } }) {
 	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/${params.kp_id}`, {
@@ -31,7 +39,6 @@ async function getMovieData({ params }: { params: { kp_id: number } }) {
 	if (!res.ok) {
 		throw new Error('Failed to fetch data');
 	}
-
 	return res.json();
 }
 
@@ -68,6 +75,9 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 		const MovieData = await getMovieData({ params });
 		const movie: Movie = MovieData;
 
+		dynamicTitle = `${movie.nameRu} ${movie.nameOriginal ? `/ ${movie.nameOriginal}` : ''} (${movie.year})`;
+		metadata.title = dynamicTitle;
+
 		const SimilarMoviesData = await getSimilarMoviesData({ params });
 		const movies: Movies[] = SimilarMoviesData.items;
 		const limitedMovies = movies.slice(0, 5);
@@ -76,7 +86,7 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 			return (
 				<div key={movie.filmId} className='dark:bg-zinc-900/50 p-5 border rounded-lg ease-in duration-200 hover:shadow-lg'>
 					<Link href={`/movie/${movie.filmId}`} passHref>
-						<Image src={movie.posterUrl} width={500} height={700} alt="test" />
+						<Image src={movie.posterUrl} width={500} height={700} alt={movie.nameRu} />
 						<div className='pt-2'>
 						</div>
 					</Link>
@@ -87,13 +97,13 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 		return (
 			<main>
 				<div className="container mt-5 p-5 backdrop-blur-2xl bg-white/25 dark:bg-zinc-900/50 border rounded-lg">
-					<div className='grid md:grid-cols-[auto,auto,1fr] sm:grid-cols-[auto] gap-10 mb-5'>
+					<div className='grid md:grid-cols-[1fr,2fr,auto] sm:grid-cols-[auto] gap-10 mb-5'>
 						<div>
 							<Image
 								src={movie.posterUrl}
-								width={500}
-								height={700}
-								alt={movie.nameRu}
+								width={400}
+								height={600}
+								alt={movie.nameOriginal}
 							/>
 						</div>
 						<div>
@@ -131,29 +141,33 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 							</Table>
 
 						</div>
-						{movie.ratingKinopoisk && (
+						{(movie.ratingKinopoisk || movie.ratingImdb) && (
 							<div>
 								<div className='inline-flex'>
-									<TooltipProvider delayDuration={200}>
-										<Tooltip>
-											<TooltipTrigger >
-												<Badge className={`text-xl me-2 ${getRatingColorClass(movie.ratingKinopoisk)}`}>
-													<KinopoiskIcon className='me-2' />{movie.ratingKinopoisk}
-												</Badge>
-												<TooltipContent>Рейтинг КиноПоиск: {movie.ratingKinopoisk}</TooltipContent>
-											</TooltipTrigger>
-										</Tooltip>
-									</TooltipProvider>
-									<TooltipProvider delayDuration={200}>
-										<Tooltip>
-											<TooltipTrigger>
-												<Badge className='text-xl  text-stone-400 bg-stone-400/25 hover:bg-stone-400/30'>
-													<ImdbIcon className='me-2 fill-stone-400' />{movie.ratingImdb}
-												</Badge>
-												<TooltipContent>Рейтинг IMDB: {movie.ratingKinopoisk}</TooltipContent>
-											</TooltipTrigger>
-										</Tooltip>
-									</TooltipProvider>
+									{movie.ratingKinopoisk && (
+										<TooltipProvider delayDuration={200}>
+											<Tooltip>
+												<TooltipTrigger >
+													<Badge className={`text-xl me-2 ${getRatingColorClass(movie.ratingKinopoisk)}`}>
+														<KinopoiskIcon className='me-2' />{movie.ratingKinopoisk}
+													</Badge>
+													<TooltipContent>Рейтинг КиноПоиск: {movie.ratingKinopoisk}</TooltipContent>
+												</TooltipTrigger>
+											</Tooltip>
+										</TooltipProvider>
+									)}
+									{movie.ratingImdb && (
+										<TooltipProvider delayDuration={200}>
+											<Tooltip>
+												<TooltipTrigger>
+													<Badge className='text-xl  text-stone-400 bg-stone-400/25 hover:bg-stone-400/30'>
+														<ImdbIcon className='me-2 fill-stone-400' />{movie.ratingImdb}
+													</Badge>
+													<TooltipContent>Рейтинг IMDB: {movie.ratingKinopoisk}</TooltipContent>
+												</TooltipTrigger>
+											</Tooltip>
+										</TooltipProvider>
+									)}
 								</div>
 							</div>
 						)}

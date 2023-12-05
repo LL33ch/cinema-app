@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/navigation-menu"
 import { ModeToggle } from '@/components/ui/ModeToggle'
 import { Button } from '@/components/ui/button'
-import { AlignJustify, Film } from 'lucide-react'
+import { AlignJustify, Film, Home } from 'lucide-react'
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import React from 'react'
 import SearchMovie from '@/components/SearchMovies'
@@ -55,7 +55,7 @@ const SheetNavbar = (props: any) => {
 
   return (
     <div className='flex flex-col space-y-3 font-medium mt-5 pb-10 pl-6'>
-      {navbarLinks.map((item) => (
+      {navbarLinks.slice(1).map((item) => (
         <SheetCloseWrapper {...shetCloseWrapperProps} key={item.id}>
           <Link key={item.id} href={item.href}>
             {item.label}
@@ -92,19 +92,19 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="dark"
           enableSystem
-          disableTransitionOnChange
         >
           <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className='container px-3 grid grid-cols-[1fr_auto] h-14 items-center'>
-              <div className='mr-4 hidden md:flex'>
-                <NavigationMenu>
-                  <NavigationMenuList>
-                    <Navbar />
-                  </NavigationMenuList>
-                </NavigationMenu>
-              </div>
+            <div className='container px-3 grid grid-cols-[auto_1fr_auto] sm:grid-cols-[1fr_auto] h-14 items-center'>
+              <NavigationMenu className='hidden md:flex'>
+                <NavigationMenuList>
+                  <Navbar />
+                </NavigationMenuList>
+              </NavigationMenu>
               <Sheet>
                 <SheetTrigger className='md:hidden w-fit' asChild><Button variant="outline"><AlignJustify /></Button></SheetTrigger>
+                <Link className='flex sm:hidden ms-2' key={navbarLinks[0].id} href={navbarLinks[0].href}>
+                  {navbarLinks[0].label}
+                </Link>
                 <SheetContent side={'left'} >
                   <SheetNavbar withSheetClose />
                 </SheetContent>

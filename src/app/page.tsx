@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 
 async function getData() {
   console.log('Fatching...')
-  const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=TOP_250_MOVIES&page=1`, {
+  const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=TOP_POPULAR_ALL&page=1`, {
     method: 'GET',
     headers: {
       'X-API-KEY': process.env.NEXT_PUBLIC_API_KEY || '',
@@ -82,13 +82,13 @@ const Navbar = () => {
 function getRatingColorClass(rating: number) {
   switch (true) {
     case rating >= 8:
-      return 'fill-amber-300 text-amber-300';
+      return 'fill-amber-300 text-amber-500 dark:text-amber-300';
     case rating > 7:
-      return 'fill-green-500 text-green-500';
+      return 'fill-green-500 text-green-700 dark:text-green-500';
     case rating <= 7:
-      return 'fill-stone-400 text-stone-400';
+      return 'fill-stone-400 text-stone-600 dark:text-stone-400';
     default:
-      return 'fill-stone-400 text-stone-400';
+      return 'fill-stone-400 text-stone-600 dark:text-stone-400';
   }
 }
 
@@ -100,13 +100,13 @@ export default async function Home() {
 
     const MoviesArray = movies.map((movie) => {
       return (
-        <div key={movie.kinopoiskId} className='dark:bg-zinc-900/50 p-5 border rounded-lg hover:shadow-lg'>
+        <div key={movie.kinopoiskId} className='dark:bg-zinc-900/50 p-5 border rounded-lg transition duration-150 ease-in-out hover:shadow-lg'>
           <Link href={`/movie/${movie.kinopoiskId}`} passHref>
-            <div className='grid grid-cols-[auto_auto_1fr] gap-5'>
-              <Image src={movie.posterUrl} width={72} height={108} alt={movie.nameEn} />
+            <div className='grid grid-cols-[auto_1fr_auto] gap-5'>
+              <Image src={movie.posterUrl} width={72} height={108} alt={movie.nameRu} />
               <div>
                 <h2 className='font-bold text-xl'>{movie.nameRu}</h2>
-                <h3 className='text-sm mt-2'>{movie.nameOriginal}, {movie.year}</h3>
+                <h3 className='text-sm mt-2'>{movie.nameOriginal ? `${movie.nameOriginal},` : ''} {movie.year}</h3>
                 <h3 className='flex text-stone-400 text-sm mt-2'>{movie.countries.map(Сountry => Сountry.country).join(', ')}<Dot />{movie.genres.map(Genre => Genre.genre).join(', ')}</h3>
               </div>
               <div className='justify-self-end'>
