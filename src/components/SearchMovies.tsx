@@ -55,7 +55,7 @@ const SearchMovie = () => {
 			<DialogTrigger asChild><Button className='me-2 p-3 border text-muted-foreground' variant="ghost"><Search className="md:mr-2 h-[1.2rem] w-[1.2rem] text-white md:text-inherit" /> <span className='hidden md:block'>Поиск фильмов и сериалов</span></Button></DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Поиск фильмов</DialogTitle>
+					<DialogTitle>Поиск фильмов и сериалов</DialogTitle>
 				</DialogHeader>
 				<div>
 					<Input value={searchTerm} onChange={handleChange} className='' placeholder="Поиск по названию" />
@@ -71,7 +71,6 @@ const SearchMovie = () => {
 												</div>
 												<div className='ms-2'><span className='font-medium'>{movie.nameRu}</span> <span>({movie.year})</span><br />{movie.rating ? movie.rating : ''}</div>
 											</div>
-
 										</Link>
 									</DialogTrigger>
 								))}

@@ -122,11 +122,12 @@ export default async function Home() {
       <main>
         <div className='container flex-1 items-start my-5 md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-3 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-5'>
           <div>
-            <ScrollArea className="h-full w-full rounded-lg border p-2 mb-3">
+            <ScrollArea className="h-full w-full dark:bg-zinc-900/50  rounded-lg border p-2 mb-3">
               <Navbar />
             </ScrollArea>
           </div>
           <div>
+            <h1 className="text-2xl font-medium mb-5">Популярные</h1>
             <div className='grid grid-cols-1 gap-5'>
               {MoviesArray}
             </div>

@@ -26,8 +26,8 @@ const navbarLinks = [
     id: 1,
     href: "/",
     label: (
-      <Button variant="outline" >
-        <Film className="mr-2 h-4 w-4" /> Cinema-App
+      <Button variant="ghost" className='font-bold' >
+        <Film className="mr-2 h-[1fr] w-[1fr]" /> Cinema-App
       </Button>),
   },
   {
@@ -54,7 +54,7 @@ const SheetNavbar = (props: any) => {
     : [React.Fragment, {}];
 
   return (
-    <div className='flex flex-col space-y-3 font-medium mt-5 pb-10 pl-6'>
+    <div className='flex flex-col font-medium mt-5 pb-10 pl-6'>
       {navbarLinks.slice(1).map((item) => (
         <SheetCloseWrapper {...shetCloseWrapperProps} key={item.id}>
           <Link key={item.id} href={item.href}>
@@ -101,10 +101,12 @@ export default function RootLayout({
                 </NavigationMenuList>
               </NavigationMenu>
               <Sheet>
-                <SheetTrigger className='md:hidden w-fit' asChild><Button variant="outline"><AlignJustify /></Button></SheetTrigger>
-                <Link className='flex sm:hidden ms-2' key={navbarLinks[0].id} href={navbarLinks[0].href}>
-                  {navbarLinks[0].label}
-                </Link>
+                <SheetTrigger className='md:hidden w-fit' asChild><Button className='p-3' variant="outline"><AlignJustify /></Button></SheetTrigger>
+                <div className='flex sm:hidden ms-2'>
+                  <Link key={navbarLinks[0].id} href={navbarLinks[0].href}>
+                    {navbarLinks[0].label}
+                  </Link>
+                </div>
                 <SheetContent side={'left'} >
                   <SheetNavbar withSheetClose />
                 </SheetContent>
