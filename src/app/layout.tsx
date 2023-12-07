@@ -121,7 +121,7 @@ export default function RootLayout({
               </div>
             </header>
             <main className='flex-1 my-7'>{children}</main>
-            <footer className="bg-white rounded-lg shadow dark:bg-zinc-900/70">
+            <footer className="bg-white shadow dark:bg-zinc-900/70">
               <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
                 <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© {currentYear} Cinema-APP by MrR504. All Rights Reserved.
                 </span>

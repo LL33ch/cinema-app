@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { toast } from 'react-hot-toast';
 
 interface NotificationComponentProps {
@@ -8,6 +8,8 @@ interface NotificationComponentProps {
 }
 
 const Notification: React.FC<NotificationComponentProps> = ({ type, message }) => {
+	const isMounted = useRef(false);
+
 	const showToast = () => {
 		switch (type) {
 			case 'success':
@@ -22,12 +24,15 @@ const Notification: React.FC<NotificationComponentProps> = ({ type, message }) =
 		}
 	};
 
-	// Показываем уведомление при монтировании компонента
 	useEffect(() => {
-		showToast();
+		if (isMounted.current) {
+			showToast();
+		} else {
+			isMounted.current = true;
+		}
 	}, []);
 
-	return null; // Компонент не отображает ничего, просто отвечает за показ уведомления
+	return null;
 };
 
 export default Notification;
