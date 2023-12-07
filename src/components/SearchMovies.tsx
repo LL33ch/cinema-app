@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input"
 import Image from 'next/image';
-import { Movie } from '@/app/interfaces/search-movies';
+import { Movie, Root } from '@/app/interfaces/search-movies';
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {
 	Dialog,
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
+import { searchByKeyword } from '@/app/api/api';
 
 const SearchMovie = () => {
 	const [searchTerm, setSearchTerm] = useState<string>('');
@@ -31,14 +32,7 @@ const SearchMovie = () => {
 
 	const handleSearch = async () => {
 		try {
-			const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${searchTerm}`, {
-				method: 'GET',
-				headers: {
-					'X-API-KEY': process.env.NEXT_PUBLIC_API_KEY || '',
-					'Content-Type': 'application/json',
-				},
-			});
-			const data = await res.json();
+			const data = await searchByKeyword(searchTerm);
 			setSearchResults(data.films || []);
 		} catch (error) {
 			console.error('Error fetching search results:', error);
@@ -52,7 +46,7 @@ const SearchMovie = () => {
 
 	return (
 		<Dialog>
-			<DialogTrigger asChild><Button className='me-2 p-3 border text-muted-foreground' variant="ghost"><Search className="md:mr-2 h-[1.2rem] w-[1.2rem] text-white md:text-inherit" /> <span className='hidden md:block'>Поиск фильмов и сериалов</span></Button></DialogTrigger>
+			<DialogTrigger asChild><Button className='me-2 p-3 border text-muted-foreground' variant="ghost"><Search className="md:mr-2 h-[1.2rem] w-[1.2rem] dark:text-white md:text-inherit" /> <span className='hidden md:block'>Поиск фильмов и сериалов</span></Button></DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Поиск фильмов и сериалов</DialogTitle>

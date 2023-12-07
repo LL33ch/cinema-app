@@ -1,6 +1,5 @@
 import { Movie } from '@/app/interfaces/movie.interface';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
 import { Badge } from "@/components/ui/badge"
 import { Bookmark, MonitorPlay } from 'lucide-react';
 import Link from 'next/link';
@@ -17,45 +16,17 @@ import {
 } from "@/components/ui/tooltip"
 import { Movies } from '@/app/interfaces/similar-movies.interface';
 import WatchMovie from '@/components/WatchMovie';
-import Notification from '@/components/Notification';
 import { Metadata } from 'next';
+import { getMovie, getSimilarMovies } from '@/app/api/api';
+import Notification from '@/components/Notification';
+
 
 let dynamicTitle;
 
 export const metadata: Metadata = {
-	title: '', // Установите ваш заголовок по умолчанию
+	title: '',
 	description: 'cinema-next-app',
 };
-
-async function getMovieData({ params }: { params: { kp_id: number } }) {
-	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/${params.kp_id}`, {
-		method: 'GET',
-		headers: {
-			'X-API-KEY': process.env.NEXT_PUBLIC_API_KEY || '',
-			'Content-Type': 'application/json',
-		},
-	});
-
-	if (!res.ok) {
-		throw new Error('Failed to fetch data');
-	}
-	return res.json();
-}
-
-async function getSimilarMoviesData({ params }: { params: { kp_id: number } }) {
-	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/${params.kp_id}/similars`, {
-		method: 'GET',
-		headers: {
-			'X-API-KEY': process.env.NEXT_PUBLIC_API_KEY || '',
-			'Content-Type': 'application/json',
-		},
-	});
-	if (!res.ok) {
-		throw new Error('Failed to fetch data');
-	}
-
-	return res.json();
-}
 
 function getRatingColorClass(rating: number) {
 	switch (true) {
@@ -71,14 +42,15 @@ function getRatingColorClass(rating: number) {
 }
 
 export default async function MoviePage({ params }: { params: { kp_id: number } }) {
+	const kp_id = params.kp_id;
 	try {
-		const MovieData = await getMovieData({ params });
+		const MovieData = await getMovie(kp_id);
 		const movie: Movie = MovieData;
 
 		dynamicTitle = `${movie.nameRu} ${movie.nameOriginal ? `/ ${movie.nameOriginal}` : ''} (${movie.year})`;
 		metadata.title = dynamicTitle;
 
-		const SimilarMoviesData = await getSimilarMoviesData({ params });
+		const SimilarMoviesData = await getSimilarMovies(kp_id);
 		const movies: Movies[] = SimilarMoviesData.items;
 		const limitedMovies = movies.slice(0, 5);
 
@@ -95,8 +67,9 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 		});
 
 		return (
-			<main>
-				<div className="container mt-5 p-5 backdrop-blur-2xl bg-white/25 dark:bg-zinc-900/50 border rounded-lg">
+			<>
+				<div className="absolute inset-0 -z-10 blur opacity-0 dark:opacity-20 bg-cover" style={{ backgroundImage: `url(${movie.coverUrl})` }} />
+				<div className="container p-5 bg-white/25 dark:bg-zinc-900/50 border rounded-lg backdrop-blur-xl">
 					<div className='grid md:grid-cols-[1fr,2fr,auto] sm:grid-cols-[auto] gap-10 mb-5'>
 						<div>
 							<Image
@@ -109,11 +82,7 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 						<div>
 							<h1 className="text-4xl font-bold">{movie.nameRu} ({movie.year})</h1>
 							<h3 className='mt-3 text-stone-400'>{movie.nameOriginal}</h3>
-							<Link href={movie.webUrl} target='_blank'>
-								<Button className='my-5'>
-									<MonitorPlay className="mr-2 h-4 w-4" /> Смотреть
-								</Button>
-							</Link>
+							<WatchMovie MovieId={movie.kinopoiskId} element='button' />
 							<Toggle aria-label="Toggle italic" className='ms-2'>
 								<Bookmark className="h-4 w-4" />
 							</Toggle>
@@ -175,17 +144,16 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 					<Separator className="my-4" />
 					<p>{movie.description}</p>
 				</div>
-				<WatchMovie id={movie.kinopoiskId} />
-				{SimilarMoviesArray.length > 0 ? (
-					<div className="container mt-5 p-5 backdrop-blur-2xl bg-white/25 dark:bg-zinc-900/50 border rounded-lg">
+				<WatchMovie MovieId={movie.kinopoiskId} element='iframe' />
+				{SimilarMoviesArray.length > 0 && (
+					<div className="container mt-5 p-5 backdrop-blur-xl bg-white/25 dark:bg-zinc-900/50 border rounded-lg">
 						<h2 className='text-lg mb-5 font-medium'>Похожие фильмы</h2>
 						<div className='grid grid-cols-1 md:grid-cols-5 gap-5'>
 							{SimilarMoviesArray}
 						</div>
 					</div>
-				) : null}
-				<Image className='absolute top-0 left-1/2 transform -translate-x-1/2 z-[-1] blur-xl opacity-0 dark:opacity-20' src={movie.coverUrl || ''} width={1500} height={1500} alt={movie.nameRu} />
-			</main >
+				)}
+			</>
 		);
 	} catch (error) {
 		return <Notification type="error" message={`Произошла ошибка на сервере: ${error}`} />

@@ -4,27 +4,14 @@ import Image from 'next/image'
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { Film, Star, Dot } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import KinopoiskIcon from '/public/kinopoisk.svg';
-import ImdbIcon from '/public/imdb.svg';
-import { Badge } from '@/components/ui/badge';
-
-async function getData() {
-  console.log('Fatching...')
-  const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=TOP_POPULAR_ALL&page=1`, {
-    method: 'GET',
-    headers: {
-      'X-API-KEY': process.env.NEXT_PUBLIC_API_KEY || '',
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
-
-  return res.json();
-}
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { getTop250Movies, getTopPopularAll } from './api/api';
+import Notification from '@/components/Notification';
 
 const navbarLinks = [
   {
@@ -92,15 +79,14 @@ function getRatingColorClass(rating: number) {
   }
 }
 
-
 export default async function Home() {
   try {
-    const data: Root = await getData();
+    const data: Root = await getTop250Movies();
     const movies: Movies[] = data.items;
 
     const MoviesArray = movies.map((movie) => {
       return (
-        <div key={movie.kinopoiskId} className='dark:bg-zinc-900/50 p-5 border rounded-lg transition duration-150 ease-in-out hover:shadow-lg'>
+        <div key={movie.kinopoiskId} className='dark:bg-zinc-900/50 hover:border-zinc-600 p-5 border rounded-lg transition duration-150 ease-in-out hover:shadow-lg'>
           <Link href={`/movie/${movie.kinopoiskId}`} passHref>
             <div className='grid grid-cols-[auto_1fr_auto] gap-5'>
               <Image src={movie.posterUrl} width={72} height={108} alt={movie.nameRu} />
@@ -119,21 +105,39 @@ export default async function Home() {
     });
 
     return (
-      <main>
-        <div className='container flex-1 items-start my-5 md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-3 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-5'>
-          <div>
-            <ScrollArea className="h-full w-full dark:bg-zinc-900/50  rounded-lg border p-2 mb-3">
-              <Navbar />
-            </ScrollArea>
-          </div>
-          <div>
-            <h1 className="text-2xl font-medium mb-5">Популярные</h1>
-            <div className='grid grid-cols-1 gap-5'>
-              {MoviesArray}
+      <div className='container px-2 flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-3 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-5'>
+        <div>
+          <ScrollArea className="h-full w-full dark:bg-zinc-900/50  rounded-lg border p-2 mb-3">
+            <Navbar />
+          </ScrollArea>
+        </div>
+        <div>
+          <div className='flex mb-3'>
+            <h1 className="text-xl font-bold sm:truncate sm:text-3xl">
+              Популярные
+            </h1>
+            <div className='ml-auto'>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant={'outline'}>Фильтр</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>Топ 250 фильмов</DropdownMenuItem>
+                  <DropdownMenuItem>Скоро выходит</DropdownMenuItem>
+                  <DropdownMenuItem>Семейные фильмы</DropdownMenuItem>
+                  <DropdownMenuItem>Фильмы про любовь</DropdownMenuItem>
+                  <DropdownMenuItem>Фильмы про зомби</DropdownMenuItem>
+                  <DropdownMenuItem>Фильмы про катастрофы</DropdownMenuItem>
+
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
+          <div className='grid grid-cols-1 gap-5'>
+            {MoviesArray}
+          </div>
         </div>
-      </main>
+      </div>
     );
 
   } catch (error) {

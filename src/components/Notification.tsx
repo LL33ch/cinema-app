@@ -1,15 +1,14 @@
 "use client"
 import React, { useEffect } from 'react';
-import { toast } from 'sonner';
+import { toast } from 'react-hot-toast';
 
 interface NotificationComponentProps {
-	type: 'default' | 'success' | 'info' | 'error';
+	type?: 'success' | 'info' | 'error';
 	message: string;
 }
 
 const Notification: React.FC<NotificationComponentProps> = ({ type, message }) => {
 	const showToast = () => {
-
 		switch (type) {
 			case 'success':
 				toast.success(message);
