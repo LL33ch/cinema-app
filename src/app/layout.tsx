@@ -145,6 +145,7 @@ export default function RootLayout({
             <Toaster position="bottom-left" />
           </div>
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   )
