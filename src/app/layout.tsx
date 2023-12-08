@@ -15,6 +15,7 @@ import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/ui/s
 import React from 'react'
 import SearchMovie from '@/components/SearchMovies'
 import { Toaster } from 'react-hot-toast'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
   title: 'Cinema Next App by MrRobot (MrR504)',

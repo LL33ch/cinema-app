@@ -78,7 +78,7 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 								alt={movie.nameOriginal}
 							/>
 							<div className='block sm:hidden absolute bottom-0 bg-gradient-to-t from-black via-black/70 p-3 pt-10 rounded w-full'>
-								<h1 className="text-3xl font-bold">{movie.nameRu} ({movie.year})</h1>
+								<h1 className="text-3xl text-white font-bold">{movie.nameRu} ({movie.year})</h1>
 								<h3 className='mt-3 text-stone-400'>{movie.nameOriginal}</h3>
 							</div>
 						</div>
