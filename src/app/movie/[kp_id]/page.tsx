@@ -56,32 +56,37 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 
 		const SimilarMoviesArray = limitedMovies.map((movie) => {
 			return (
-				<div key={movie.filmId} className='dark:bg-zinc-900/50 p-5 border rounded-lg ease-in duration-200 hover:shadow-lg'>
-					<Link href={`/movie/${movie.filmId}`} passHref>
-						<Image src={movie.posterUrl} width={500} height={700} alt={movie.nameRu} />
-						<div className='pt-2'>
-						</div>
-					</Link>
-				</div>
+				<Link key={movie.filmId} href={`/movie/${movie.filmId}`} passHref>
+					<div className='dark:bg-zinc-900/50 hover:border-zinc-600 hover:shadow-lg p-4 border rounded-lg ease-in duration-200 hover:shadow-lg'>
+						<Image className='rounded-lg' src={movie.posterUrl} width={500} height={700} alt={movie.nameRu} />
+					</div>
+				</Link>
 			);
 		});
 
 		return (
 			<>
-				<div className="absolute inset-0 -z-10 blur opacity-10 dark:opacity-20 bg-cover" style={{ backgroundImage: `url(${movie.coverUrl})` }} />
-				<div className="container p-5 bg-white/25 dark:bg-zinc-900/50 border rounded-lg backdrop-blur-xl">
-					<div className='grid md:grid-cols-[1fr,2fr,auto] sm:grid-cols-[auto] gap-10 mb-5'>
-						<div>
+				<div className="absolute inset-0 -z-10 blur opacity-0 dark:opacity-20 bg-cover" style={{ backgroundImage: `url(${movie.coverUrl})` }} />
+				<div className="container p-5 bg-white/25 dark:bg-zinc-900/80 border rounded-lg backdrop-blur-xl">
+					<div className='grid md:grid-cols-[1fr,2fr,auto] sm:grid-cols-[auto] gap-0 sm:gap-10 mb-5'>
+						<div className='relative'>
 							<Image
+								className='rounded-lg'
 								src={movie.posterUrl}
 								width={400}
 								height={600}
 								alt={movie.nameOriginal}
 							/>
+							<div className='block sm:hidden absolute bottom-0 bg-gradient-to-t from-black via-black/70 p-3 pt-10 rounded w-full'>
+								<h1 className="text-3xl font-bold">{movie.nameRu} ({movie.year})</h1>
+								<h3 className='mt-3 text-stone-400'>{movie.nameOriginal}</h3>
+							</div>
 						</div>
 						<div>
-							<h1 className="text-4xl font-bold">{movie.nameRu} ({movie.year})</h1>
-							<h3 className='mt-3 text-stone-400'>{movie.nameOriginal}</h3>
+							<div className='hidden sm:block'>
+								<h1 className="text-4xl font-bold">{movie.nameRu} ({movie.year})</h1>
+								<h3 className='mt-3 text-stone-400'>{movie.nameOriginal}</h3>
+							</div>
 							<WatchMovie MovieId={movie.kinopoiskId} element='button' />
 							<Toggle aria-label="Toggle italic" className='ms-2'>
 								<Bookmark className="h-4 w-4" />
@@ -146,7 +151,7 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 				</div>
 				<WatchMovie MovieId={movie.kinopoiskId} element='iframe' />
 				{SimilarMoviesArray.length > 0 && (
-					<div className="container mt-5 p-5 backdrop-blur-xl bg-white/25 dark:bg-zinc-900/50 border rounded-lg">
+					<div className="container mt-5 p-5 backdrop-blur-xl bg-white/25 dark:bg-zinc-900/80 border rounded-lg">
 						<h2 className='text-lg mb-5 font-medium'>Похожие фильмы</h2>
 						<div className='grid grid-cols-1 md:grid-cols-5 gap-5'>
 							{SimilarMoviesArray}

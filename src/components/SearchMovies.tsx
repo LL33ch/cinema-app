@@ -51,7 +51,6 @@ const SearchMovie = () => {
 	);
 
 	useEffect(() => {
-		// Здесь нет необходимости в использовании emptyMessage
 	}, [searchResults]);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

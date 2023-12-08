@@ -28,14 +28,14 @@ export function ModeToggle() {
 			<DropdownMenuContent align="end">
 				<DropdownMenuItem onClick={() => {
 					setTheme("light")
-					toast.success('Светлая тема выбрана', { position: 'top-center' });
+					toast.success('Светлая тема выбрана', { position: 'bottom-center' });
 				}}>
 					Светлая
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={() => {
 					setTheme("dark")
 					toast.success('Тёмная тема выбрана', {
-						position: 'top-center', style: {
+						position: 'bottom-center', style: {
 							borderRadius: '10px',
 							background: '#101013',
 							color: '#fff',
