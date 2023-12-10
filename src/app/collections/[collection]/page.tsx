@@ -32,42 +32,38 @@ export default async function Collection({ params }: { params: { collection: str
 		case 'top250-movies':
 			data = await getTop250Movies();
 			collectionName = 'Топ 250 фильмов'
-			metadata.title = collectionName;
 			break;
 		case 'top250-serials':
 			data = await getTop250Serials();
 			collectionName = 'Топ 250 сериалов'
-			metadata.title = collectionName;
 			break;
 		case 'closes-release':
 			data = await getSoonMovies();
 			collectionName = 'Скоро выходит'
-			metadata.title = collectionName;
 			break;
 		case 'family':
 			data = await getFamilyMovies();
 			collectionName = 'Семейные фильмы'
-			metadata.title = collectionName;
 			break;
 		case 'love':
 			data = await getLoveMovies();
 			collectionName = 'Фильмы про любовь'
-			metadata.title = collectionName;
 			break;
 		case 'zombie':
 			data = await getZombieMovies();
 			collectionName = 'Фильмы про зомби'
-			metadata.title = collectionName;
 			break;
 		case 'catastrophe':
 			data = await getCatastropheMovies();
 			collectionName = 'Фильмы про катастрофы'
-			metadata.title = collectionName;
 			break;
 		default:
 			return notFound();
 	}
 	const movies: Movies[] = data.items;
+
+	metadata.title = collectionName;
+
 
 	return (
 		<div className='container px-2'>
