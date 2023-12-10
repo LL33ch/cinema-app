@@ -76,6 +76,30 @@ export async function getMovie(kp_id: number) {
 	return res.json();
 }
 
+export async function getMovies() {
+	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films?order=NUM_VOTE&type=FILM&page=1`, requestOptions);
+	if (!res.ok) {
+		throw new Error('Failed to fetch data');
+	}
+	return res.json();
+}
+
+export async function getSerials() {
+	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films?order=NUM_VOTE&type=TV_SERIES&page=1`, requestOptions);
+	if (!res.ok) {
+		throw new Error('Failed to fetch data');
+	}
+	return res.json();
+}
+
+export async function getTVShows() {
+	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films?order=NUM_VOTE&type=TV_SHOW&page=1`, requestOptions);
+	if (!res.ok) {
+		throw new Error('Failed to fetch data');
+	}
+	return res.json();
+}
+
 export async function getSimilarMovies(kp_id: number) {
 	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/${kp_id}/similars`, requestOptions);
 	if (!res.ok) {

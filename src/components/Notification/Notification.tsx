@@ -1,11 +1,7 @@
 "use client"
 import React, { useEffect, useRef } from 'react';
 import { toast } from 'react-hot-toast';
-
-interface NotificationComponentProps {
-	type?: 'success' | 'info' | 'error';
-	message: string;
-}
+import NotificationComponentProps from './Notification.props';
 
 const Notification: React.FC<NotificationComponentProps> = ({ type, message }) => {
 	const isMounted = useRef(false);

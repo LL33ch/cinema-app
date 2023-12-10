@@ -1,8 +1,8 @@
-import MovieCard from '@/components/MovieCard';
+import MovieCard from '@/components/MovieCard/MovieCard';
 import { Movies, Root } from '@/app/interfaces/movies.interface';
 
 import { getCatastropheMovies, getFamilyMovies, getLoveMovies, getSoonMovies, getTop250Movies, getTop250Serials, getTopPopularAll, getZombieMovies } from '@/app/api/api';
-import SelectCategory from '@/components/SelectCategory';
+import SelectCategory from '@/components/SelectCategory/SelectCategory';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
@@ -67,7 +67,7 @@ export default async function Collection({ params }: { params: { collection: str
 
 	return (
 		<div className='container px-2'>
-			<div>
+			<div className='text-center md:text-left'>
 				<SelectCategory category={collectionName} />
 			</div>
 			<div>

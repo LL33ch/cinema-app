@@ -1,7 +1,7 @@
 import { Movie } from '@/app/interfaces/movie.interface';
 import Image from 'next/image';
 import { Badge } from "@/components/ui/badge"
-import { Bookmark, MonitorPlay } from 'lucide-react';
+import { Bookmark } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { Toggle } from '@/components/ui/toggle';
@@ -15,16 +15,16 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Movies } from '@/app/interfaces/similar-movies.interface';
-import WatchMovie from '@/components/WatchMovie';
+import { WatchMovieButton, WatchMovieIframe } from '@/components/WatchMovie/WatchMovie';
 import { Metadata } from 'next';
 import { getMovie, getSimilarMovies } from '@/app/api/api';
-import Notification from '@/components/Notification';
+import Notification from '@/components/Notification/Notification';
 
 
 let dynamicTitle;
 
 export const metadata: Metadata = {
-	title: '',
+	title: 'Фильмы',
 };
 
 function getRatingColorClass(rating: number) {
@@ -75,6 +75,7 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 								width={400}
 								height={600}
 								alt={movie.nameOriginal}
+								priority
 							/>
 							<div className='block sm:hidden absolute bottom-0 bg-gradient-to-t from-black via-black/70 p-3 pt-10 rounded w-full'>
 								<h1 className="text-3xl text-white font-bold">{movie.nameRu} ({movie.year})</h1>
@@ -86,7 +87,7 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 								<h1 className="text-4xl font-bold">{movie.nameRu} ({movie.year})</h1>
 								<h3 className='mt-3 text-stone-400'>{movie.nameOriginal}</h3>
 							</div>
-							<WatchMovie MovieId={movie.kinopoiskId} element='button' />
+							<WatchMovieButton MovieId={movie.kinopoiskId} />
 							<Toggle aria-label="Toggle italic" className='ms-2'>
 								<Bookmark className="h-4 w-4" />
 							</Toggle>
@@ -148,7 +149,7 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 					<Separator className="my-4" />
 					<p>{movie.description}</p>
 				</div>
-				<WatchMovie MovieId={movie.kinopoiskId} element='iframe' />
+				<WatchMovieIframe MovieId={movie.kinopoiskId} />
 				{SimilarMoviesArray.length > 0 && (
 					<div className="container mt-5 p-5 backdrop-blur-xl bg-white/25 dark:bg-zinc-900/80 border rounded-lg">
 						<h2 className='text-lg mb-5 font-medium'>Похожие фильмы</h2>

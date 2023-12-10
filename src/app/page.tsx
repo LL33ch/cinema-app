@@ -1,8 +1,8 @@
-import MovieCard from '@/components/MovieCard';
+import MovieCard from '@/components/MovieCard/MovieCard';
 import { Movies, Root } from '@/app/interfaces/movies.interface';
 
 import { getTopPopularAll } from './api/api';
-import SelectCategory from '@/components/SelectCategory';
+import SelectCategory from '@/components/SelectCategory/SelectCategory';
 
 export default async function Home() {
   const data: Root = await getTopPopularAll();

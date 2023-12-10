@@ -6,12 +6,9 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from 'next/link';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { Clock, Flame, Heart, Skull, Star, TrendingUp, Users } from 'lucide-react';
-
-interface SelectCategoryProps {
-	category: string;
-}
+import SelectCategoryProps from './SelectCategory.props';
 
 const SelectCategory: React.FC<SelectCategoryProps> = ({ category }) => {
 	return (

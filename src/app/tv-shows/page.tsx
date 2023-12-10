@@ -1,11 +1,11 @@
 import MovieCard from '@/components/MovieCard/MovieCard';
 import { Movies, Root } from '@/app/interfaces/movies.interface';
 
-import { getSerials } from '../api/api';
+import { getTVShows } from '../api/api';
 import SelectCategory from '@/components/SelectCategory/SelectCategory';
 
 export default async function Home() {
-	const data: Root = await getSerials();
+	const data: Root = await getTVShows();
 	const movies: Movies[] = data.items;
 
 	return (

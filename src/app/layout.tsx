@@ -5,7 +5,6 @@ import { ThemeProvider } from "@/components/ThemeProvider"
 import {
   NavigationMenu,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 import { ModeToggle } from '@/components/ui/ModeToggle'
@@ -13,7 +12,7 @@ import { Button } from '@/components/ui/button'
 import { AlignJustify, Film, Github, Home, Tv } from 'lucide-react'
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import React from 'react'
-import SearchMovie from '@/components/SearchMovies'
+import SearchMovie from '@/components/SearchMovies/SearchMovies'
 import { Toaster } from 'react-hot-toast'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
@@ -43,6 +42,11 @@ const navbarLinks = [
   },
   {
     id: 4,
+    href: "/tv-shows",
+    label: (<Button variant="link"><Tv className="text-zinc-600	dark:text-current mr-2 h-4 w-4" /> ТВ-Шоу</Button>)
+  },
+  {
+    id: 5,
     href: "https://github.com/MrR504/cinema-app",
     label: (<Button variant="link"><Github className="text-zinc-600	dark:text-current mr-2 h-4 w-4" /> Github</Button>),
     target: "_blank"
