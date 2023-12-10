@@ -27,7 +27,7 @@ const navbarLinks = [
     id: 1,
     href: "/",
     label: (
-      <Button variant="link" className='font-bold' >
+      <Button variant="ghost" className='font-bold' >
         <Film className="mr-2 h-[1fr] w-[1fr]" /> Cinema-App
       </Button>),
   },
@@ -121,7 +121,7 @@ export default function RootLayout({
                 </div>
               </div>
             </header>
-            <main className='flex-1 my-7'>{children}</main>
+            <main className='flex-1 my-5'>{children}</main>
             <footer className="bg-white shadow dark:bg-zinc-900/70">
               <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
                 <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© {currentYear} Cinema-APP by MrR504. All Rights Reserved.

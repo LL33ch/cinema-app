@@ -1,11 +1,10 @@
-import { Root } from '../interfaces/search-movies';
-
 const requestOptions = {
 	method: 'GET',
 	headers: {
 		'X-API-KEY': process.env.NEXT_PUBLIC_API_KEY || '',
 		'Content-Type': 'application/json',
 	},
+	next: { revalidate: 86400 }
 }
 
 export async function getTopPopularAll() {
@@ -18,6 +17,51 @@ export async function getTopPopularAll() {
 
 export async function getTop250Movies() {
 	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=TOP_250_MOVIES&page=1`, requestOptions);
+	if (!res.ok) {
+		throw new Error('Failed to fetch data');
+	}
+	return res.json();
+}
+
+export async function getTop250Serials() {
+	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=TOP_250_TV_SHOWS&page=1`, requestOptions);
+	if (!res.ok) {
+		throw new Error('Failed to fetch data');
+	}
+	return res.json();
+}
+
+export async function getSoonMovies() {
+	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=CLOSES_RELEASES&page=1`, requestOptions);
+	if (!res.ok) {
+		throw new Error('Failed to fetch data');
+	}
+	return res.json();
+}
+
+export async function getFamilyMovies() {
+	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=FAMILY&page=1`, requestOptions);
+	if (!res.ok) {
+		throw new Error('Failed to fetch data');
+	}
+	return res.json();
+}
+export async function getLoveMovies() {
+	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=LOVE_THEME&page=1`, requestOptions);
+	if (!res.ok) {
+		throw new Error('Failed to fetch data');
+	}
+	return res.json();
+}
+export async function getZombieMovies() {
+	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=ZOMBIE_THEME&page=1`, requestOptions);
+	if (!res.ok) {
+		throw new Error('Failed to fetch data');
+	}
+	return res.json();
+}
+export async function getCatastropheMovies() {
+	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=CATASTROPHE_THEME&page=1`, requestOptions);
 	if (!res.ok) {
 		throw new Error('Failed to fetch data');
 	}

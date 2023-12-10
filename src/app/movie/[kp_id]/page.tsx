@@ -25,7 +25,6 @@ let dynamicTitle;
 
 export const metadata: Metadata = {
 	title: '',
-	description: 'cinema-next-app',
 };
 
 function getRatingColorClass(rating: number) {
@@ -57,8 +56,8 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 		const SimilarMoviesArray = limitedMovies.map((movie) => {
 			return (
 				<Link key={movie.filmId} href={`/movie/${movie.filmId}`} passHref>
-					<div className='dark:bg-zinc-900/50 hover:border-zinc-600 hover:shadow-lg p-4 border rounded-lg ease-in duration-200 hover:shadow-lg'>
-						<Image className='rounded-lg' src={movie.posterUrl} width={500} height={700} alt={movie.nameRu} />
+					<div className='dark:bg-zinc-900/50 hover:border-zinc-600 hover:shadow-lg p-4 border rounded-lg ease-in duration-200'>
+						<Image className='rounded-lg object-cover transition-all hover:scale-105 aspect-[3/4]' src={movie.posterUrl} width={500} height={700} alt={movie.nameRu} />
 					</div>
 				</Link>
 			);
