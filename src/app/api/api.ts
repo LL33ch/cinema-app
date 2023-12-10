@@ -69,12 +69,22 @@ export async function getCatastropheMovies() {
 }
 
 export async function getMovie(kp_id: number) {
-	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/${kp_id}`, requestOptions);
-	if (!res.ok) {
+	const movieRes = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/${kp_id}`, requestOptions);
+	const movieHDVBRes = await fetch(`https://apivb.info/api/videos.json?id_kp=${kp_id}&token=ed9c3f40390e3507869bd9d9fd783f3b`, requestOptions);
+
+	if (!movieRes.ok || !movieHDVBRes.ok) {
 		throw new Error('Failed to fetch data');
 	}
-	return res.json();
+
+	const movieData = await movieRes.json();
+	const movieHDVBData = await movieHDVBRes.json();
+
+	return {
+		movie: movieData,
+		movieHDVB: movieHDVBData,
+	};
 }
+
 
 export async function getMovies() {
 	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films?order=NUM_VOTE&type=FILM&page=1`, requestOptions);

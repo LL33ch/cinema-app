@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { MonitorPlay } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '../ui/input';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -13,14 +13,20 @@ import Link from 'next/link';
 const formSchema = z.object({
 	password: z.string().min(1).max(4),
 })
-const accessValue = localStorage.getItem('access');
-
 interface WatchMovieIframeProps {
-	MovieId: number;
+	IframeSrc?: string;
+	kp_id?: number;
 }
 
-export function WatchMovieButton({ MovieId }: WatchMovieIframeProps) {
+export function WatchMovieButton() {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const [accessValue, setAccessValue] = useState<string | null>(null);
+
+	useEffect(() => {
+		const access = localStorage.getItem('access');
+		setAccessValue(access);
+	}, []);
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 	})
@@ -76,18 +82,36 @@ export function WatchMovieButton({ MovieId }: WatchMovieIframeProps) {
 	};
 }
 
-export function WatchMovieIframe({ MovieId }: WatchMovieIframeProps) {
+export function WatchMovieIframe({ IframeSrc, kp_id }: WatchMovieIframeProps) {
+	const [accessValue, setAccessValue] = useState<string | null>(null);
+
+	useEffect(() => {
+		const access = localStorage.getItem('access');
+		setAccessValue(access);
+	}, []);
+
 	if (accessValue) {
 		return (
-			<div className={`container mt-5 p-5 backdrop-blur-2xl bg-white/25 dark:bg-zinc-900/50 border rounded-lg`}>
-				<iframe
-					id="iframe"
-					src={`//06796622434375553.svetacdn.in/EARWdntqzBEw?kp_id=${MovieId}`}
-					width="100%"
-					height="700px"
-					allowFullScreen
-				></iframe>
-			</div>
+			<>
+				{/* <div className={`container mt-5 p-5 backdrop-blur-2xl bg-white/25 dark:bg-zinc-900/50 border rounded-lg`}>
+					<iframe
+						id="iframe"
+						src={IframeSrc}
+						width="100%"
+						height="700px"
+						allowFullScreen
+					></iframe>
+				</div> */}
+				<div className={`container mt-5 p-5 backdrop-blur-2xl bg-white/25 dark:bg-zinc-900/50 border rounded-lg`}>
+					<iframe
+						id="iframe"
+						src={`//06796622434375553.svetacdn.in/EARWdntqzBEw?kp_id=${kp_id}`}
+						width="100%"
+						height="700px"
+						allowFullScreen
+					></iframe>
+				</div>
+			</>
 		);
 	}
 };

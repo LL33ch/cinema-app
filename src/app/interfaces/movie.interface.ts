@@ -46,6 +46,29 @@ export interface Movie {
 	lastSync: string
 }
 
+export interface MovieHDVB {
+	title_ru: string
+	title_en: string
+	year: number
+	kinopoisk_id: number
+	world_art_id: any
+	translator: string
+	token: string
+	type: string
+	iframe_url: string
+	added_date: string
+	update_date: string
+	block: boolean
+	translator_id: number
+	quality: string
+	poster: string
+	trailer: string
+	genres: any
+	countries: any
+	actors: any
+	directors: any
+}
+
 export interface Country {
 	country: string[]
 }
