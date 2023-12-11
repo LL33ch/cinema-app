@@ -74,7 +74,8 @@ const SearchMovie = () => {
 
 	return (
 		<Dialog>
-			<DialogTrigger asChild><Button className='me-2 p-3 border text-muted-foreground' variant="outline"><Search className="md:mr-2 h-[1.2rem] w-[1.2rem] dark:text-white md:text-inherit" /> <span className='hidden md:block'>Поиск фильмов и сериалов</span></Button></DialogTrigger>
+			<DialogTrigger asChild>
+				<Button className='me-2 p-3 border text-muted-foreground' variant="outline"><Search className="md:mr-2 h-[1.2rem] w-[1.2rem] dark:text-white md:text-inherit" /><span className='hidden md:block'>Поиск фильмов и сериалов</span></Button></DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Поиск фильмов и сериалов</DialogTitle>

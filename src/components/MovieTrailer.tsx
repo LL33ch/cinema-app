@@ -24,7 +24,7 @@ export default function Trailer({ MovieTitle, trailer }: TrailerProps) {
 				<DialogHeader>
 					<DialogTitle>Трейлер: {MovieTitle}</DialogTitle>
 				</DialogHeader>
-				{trailer ? (<iframe className="aspect-video mb-3 w-full" src={trailer}></iframe>) : null}
+				{trailer ? (<iframe className="aspect-video mb-3 w-full" src={trailer} allowFullScreen></iframe>) : null}
 			</DialogContent>
 		</Dialog>
 	);

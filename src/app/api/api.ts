@@ -7,8 +7,8 @@ const requestOptions = {
 	next: { revalidate: 86400 }
 }
 
-export async function getTopPopularAll() {
-	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=TOP_POPULAR_ALL&page=1`, requestOptions);
+export async function getTopPopularAll(page: number) {
+	const res = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=TOP_POPULAR_ALL&page=${page}`, requestOptions);
 	if (!res.ok) {
 		throw new Error('Failed to fetch data');
 	}

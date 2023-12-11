@@ -110,10 +110,11 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 										<TableCell>Жанры:</TableCell>
 										<TableCell>{movie.genres.map(Genre => Genre.genre).join(', ')}</TableCell>
 									</TableRow>
-									<TableRow>
-										<TableCell>Слоган:</TableCell>
-										<TableCell><span className='dark:text-stone-300 italic'>«{movie.slogan}»</span></TableCell>
-									</TableRow>
+									{(movie.slogan != null) &&
+										(<TableRow>
+											<TableCell>Слоган:</TableCell>
+											<TableCell><span className='dark:text-stone-300 italic'>«{movie.slogan}»</span></TableCell>
+										</TableRow>)}
 								</TableBody>
 							</Table>
 

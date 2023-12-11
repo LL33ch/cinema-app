@@ -1,10 +1,8 @@
-import MovieCard from '@/components/MovieCard/MovieCard';
 import { Movies, Root } from '@/app/interfaces/movies.interface';
-
 import { getCatastropheMovies, getFamilyMovies, getLoveMovies, getSoonMovies, getTop250Movies, getTop250Serials, getTopPopularAll, getZombieMovies } from '@/app/api/api';
-import SelectCategory from '@/components/SelectCategory/SelectCategory';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import MovieList from '@/components/MoviesList/MoviesList';
 
 export function generateStaticParams() {
 	return [
@@ -25,7 +23,7 @@ export const metadata: Metadata = {
 
 export default async function Collection({ params }: { params: { collection: string } }) {
 	const collection = params.collection;
-	let collectionName;
+	let collectionName = 'Коллекции фильмов';
 	let data: Root;
 
 	switch (collection) {
@@ -67,16 +65,7 @@ export default async function Collection({ params }: { params: { collection: str
 
 	return (
 		<div className='container px-2'>
-			<div className='text-center md:text-left'>
-				<SelectCategory category={collectionName} />
-			</div>
-			<div>
-				<div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
-					{movies.map((movie) => (
-						<MovieCard key={movie.kinopoiskId} movie={movie} />
-					))}
-				</div>
-			</div>
+			<MovieList movies={movies} category={collectionName} />
 		</div>
 	);
 }

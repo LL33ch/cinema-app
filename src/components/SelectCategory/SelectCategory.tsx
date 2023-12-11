@@ -7,14 +7,45 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Link from 'next/link';
 import { Button } from '../ui/button';
-import { Clock, Flame, Heart, Skull, Star, TrendingUp, Users } from 'lucide-react';
+import { ChevronDown, Clock, Flame, Heart, Skull, Star, TrendingUp, Users } from 'lucide-react';
 import SelectCategoryProps from './SelectCategory.props';
 
 const SelectCategory: React.FC<SelectCategoryProps> = ({ category }) => {
+	let categoryIcon: React.ReactNode;
+
+	switch (category) {
+		case 'Популярные':
+			categoryIcon = <TrendingUp className="mr-2 h-4 w-4 text-rose-600" />;
+			break;
+		case 'Топ 250 фильмов':
+			categoryIcon = <Star className="mr-2 h-4 w-4 text-amber-500" />;
+			break;
+		case 'Топ 250 сериалов':
+			categoryIcon = <Star className="mr-2 h-4 w-4 text-amber-500" />;
+			break;
+		case 'Скоро выходит':
+			categoryIcon = <Clock className="mr-2 h-4 w-4 text-muted-foreground" />;
+			break;
+		case 'Семейные фильмы':
+			categoryIcon = <Users className="mr-2 h-4 w-4 text-muted-foreground" />;
+			break;
+		case 'Фильмы про любовь':
+			categoryIcon = <Heart className="mr-2 h-4 w-4 text-muted-foreground" />;
+			break;
+		case 'Фильмы про зомби':
+			categoryIcon = <Skull className="mr-2 h-4 w-4 text-muted-foreground" />;
+			break;
+		case 'Фильмы про катастрофы':
+			categoryIcon = <Flame className="mr-2 h-4 w-4 text-muted-foreground" />;
+			break;
+		default:
+			return (<></>)
+	}
+
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger className='center' asChild>
-				<Button className='texlt-lg mb-3' variant="outline">{category}</Button>
+			<DropdownMenuTrigger asChild>
+				<Button className='text-base' variant="outline">{categoryIcon}{category}<ChevronDown className='ms-3 h-4 w-4 text-muted-foreground' /></Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
 				<Link href="/"><DropdownMenuItem><TrendingUp className="mr-2 h-4 w-4 text-rose-600" />Популярные</DropdownMenuItem></Link>
