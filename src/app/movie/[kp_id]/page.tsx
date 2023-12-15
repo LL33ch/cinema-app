@@ -21,7 +21,6 @@ import { getMovie, getSimilarMovies } from '@/app/api/api';
 import Notification from '@/components/Notification/Notification';
 import Trailer from '@/components/MovieTrailer';
 
-
 let dynamicTitle;
 
 export const metadata: Metadata = {
@@ -153,7 +152,9 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 					<Separator className="my-4" />
 					<p>{movie.description}</p>
 				</div>
-				{(MovieHDVB && MovieHDVB.iframe_url) && (<WatchMovieIframe IframeSrc={MovieHDVB.iframe_url} kp_id={movie.kinopoiskId} />)}
+				{(MovieHDVB && MovieHDVB.iframe_url) && (
+					<WatchMovieIframe IframeSrc={MovieHDVB.iframe_url} kp_id={movie.kinopoiskId} />
+				)}
 				{SimilarMoviesArray.length > 0 && (
 					<div className="container mt-5 p-5 backdrop-blur-xl bg-white/25 dark:bg-zinc-900/80 border rounded-lg">
 						<h2 className='text-lg mb-5 font-medium'>Похожие фильмы</h2>

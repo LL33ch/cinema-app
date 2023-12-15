@@ -45,12 +45,6 @@ const navbarLinks = [
     id: 4,
     href: "/tv-shows",
     label: (<Button variant="link"><Tv className="text-zinc-600	dark:text-current mr-2 h-4 w-4" /> ТВ-Шоу</Button>)
-  },
-  {
-    id: 5,
-    href: "https://github.com/MrR504/cinema-app",
-    label: (<Button variant="link"><Github className="text-zinc-600	dark:text-current mr-2 h-4 w-4" /> Github</Button>),
-    target: "_blank"
   }
 ];
 
@@ -78,7 +72,7 @@ const Navbar = () => {
     <div className='flex'>
       {navbarLinks.map((item) => (
         <NavigationMenuItem key={item.id}>
-          <Link href={item.href} target={item.target} className='pe-2'>
+          <Link href={item.href} className='pe-2'>
             {item.label}
           </Link>
         </NavigationMenuItem>
@@ -97,7 +91,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
         >
           <div className='flex flex-col min-h-screen'>

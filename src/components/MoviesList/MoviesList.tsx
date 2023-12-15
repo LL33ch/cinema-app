@@ -39,7 +39,7 @@ export const MovieList: React.FC<MovieListProps> = ({ movies, title, category })
 			<div className='flex justify-between items-center mb-3'>
 				{title && (
 					<div className='text-center md:text-left'>
-						<h1 className='text-xl'>{title}</h1>
+						<h1 className='text-xl font-bold'>{title}</h1>
 					</div>
 				)}
 				{category && (

@@ -1,7 +1,5 @@
 'use client'
 import Link from 'next/link';
-import { Button } from './ui/button';
-import { Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const currentYear = new Date().getFullYear();
@@ -22,25 +20,14 @@ export default function Footer() {
 				</span>
 				<ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
 					<li>
-						<Link href="#" className="hover:underline me-4 md:me-6">About</Link>
-					</li>
-					<li>
-						<Link href="#" className="hover:underline me-4 md:me-6">Privacy Policy</Link>
-					</li>
-					<li>
-						<Link href="#" className="hover:underline me-4 md:me-6">Licensing</Link>
-					</li>
-					<li>
-						<Link href="#" className="hover:underline me-4 md:me-6">Contact</Link>
+						<Link href="https://github.com/MrR504/cinema-app" target='_blank' className="hover:underline me-4 md:me-6">Github</Link>
 					</li>
 					{accessValue ? (
 						<li>
-							<Button variant="destructive" size="icon" onClick={() => {
+							<span className="hover:underline me-4 md:me-6 cursor-pointer text-rose-600" onClick={() => {
 								localStorage.removeItem('access');
 								window.location.reload();
-							}}>
-								<Trash2 className="h-4 w-4" />
-							</Button>
+							}}>Clear password</span>
 						</li>
 					) : <></>}
 				</ul>
