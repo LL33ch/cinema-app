@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 function getRatingColorClass(rating: number) {
 	switch (true) {
 		case rating >= 8:
-			return 'fill-amber-300 text-amber-300 bg-amber-300/25 hover:bg-amber-300/30';
+			return 'fill-amber-500 text-amber-500 bg-amber-500/25 hover:bg-amber-500/30';
 		case rating > 7:
 			return 'fill-green-500 text-green-500 bg-green-500/25 hover:bg-green-500/30';
 		case rating <= 7:

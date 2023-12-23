@@ -12,16 +12,28 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+	Drawer,
+	DrawerClose,
+	DrawerContent,
+	DrawerDescription,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerTrigger,
+} from "@/components/ui/drawer"
 import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
 import { searchByKeyword } from '@/app/api/api';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useMediaQuery } from '@/lib/hooks';
 
 const SearchMovie = () => {
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const [searchResults, setSearchResults] = useState<Movie[]>([]);
 	const [emptyResults, setEmptyResults] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const isDesktop = useMediaQuery("(min-width: 768px)")
 
 	useEffect(() => {
 		const delayDebounceFn = setTimeout(() => {
@@ -72,42 +84,86 @@ const SearchMovie = () => {
 		</div>
 	);
 
-	return (
-		<Dialog>
-			<DialogTrigger asChild>
-				<Button className='me-2 p-3 border text-muted-foreground' variant="outline"><Search className="md:mr-2 h-[1.2rem] w-[1.2rem] dark:text-white md:text-inherit" /><span className='hidden md:block'>Поиск фильмов и сериалов</span></Button></DialogTrigger>
-			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>Поиск фильмов и сериалов</DialogTitle>
-				</DialogHeader>
-				<div>
-					<Input value={searchTerm} onChange={handleChange} className='' placeholder="Поиск по названию" />
-					<>
-						{isLoading ? (
-							<ScrollArea className="h-[300px] w-full border rounded-md mt-3 p-4">
-								<SkeletonLoading />
-							</ScrollArea>
-						) : searchResults !== null && searchResults.length > 0 ? (
-							<ScrollArea className="h-[300px] w-full border rounded-md mt-3 p-4">
-								{searchResults.map((movie) => (
-									<DialogTrigger asChild key={movie.filmId} className='grid'>
-										<Link key={movie.filmId} href={`/movie/${movie.filmId}`}>
-											<div className="grid grid-cols-[auto,1fr] mb-1 p-2 rounded hover:bg-muted/50">
-												<div>
-													<Image className='rounded' src={movie.posterUrl} width={35} height={51} alt={movie.nameRu} />
+	if (isDesktop) {
+		return (
+			<Dialog>
+				<DialogTrigger asChild>
+					<Button className='me-2 p-3 border text-muted-foreground' variant="outline"><Search className="md:mr-2 h-[1.2rem] w-[1.2rem] dark:text-white md:text-inherit" /><span className='hidden md:block'>Поиск фильмов и сериалов</span></Button>
+				</DialogTrigger>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Поиск фильмов и сериалов</DialogTitle>
+					</DialogHeader>
+					<div>
+						<Input value={searchTerm} onChange={handleChange} className='' placeholder="Поиск по названию" />
+						<>
+							{isLoading ? (
+								<ScrollArea className="h-[300px] w-full border rounded-md mt-3 p-4">
+									<SkeletonLoading />
+								</ScrollArea>
+							) : searchResults !== null && searchResults.length > 0 ? (
+								<ScrollArea className="h-[300px] w-full border rounded-md mt-3 p-4">
+									{searchResults.map((movie) => (
+										<DialogTrigger asChild key={movie.filmId} className='grid'>
+											<Link key={movie.filmId} href={`/movie/${movie.filmId}`}>
+												<div className="grid grid-cols-[auto,1fr] mb-1 p-2 rounded hover:bg-muted/50">
+													<div>
+														<Image className='rounded' src={movie.posterUrl} width={35} height={51} alt={movie.nameRu} />
+													</div>
+													<div className='ms-3'><span className='font-medium'>{movie.nameRu}</span> <span>({movie.year})</span><br />{movie.rating ? movie.rating : ''}</div>
 												</div>
-												<div className='ms-3'><span className='font-medium'>{movie.nameRu}</span> <span>({movie.year})</span><br />{movie.rating ? movie.rating : ''}</div>
-											</div>
-										</Link>
-									</DialogTrigger>
-								))}
-							</ScrollArea>
-						) : emptyResults && emptyMessage}
-					</>
-				</div>
-			</DialogContent>
-		</Dialog>
-	);
+											</Link>
+										</DialogTrigger>
+									))}
+								</ScrollArea>
+							) : emptyResults && emptyMessage}
+						</>
+					</div>
+				</DialogContent>
+			</Dialog>
+		);
+	} else {
+		return (
+			<Drawer>
+				<DrawerTrigger asChild>
+					<Button className='me-2 p-3 border text-muted-foreground' variant="outline"><Search className="md:mr-2 h-[1.2rem] w-[1.2rem] dark:text-white md:text-inherit" /><span className='hidden md:block'>Поиск фильмов и сериалов</span></Button>
+				</DrawerTrigger>
+				<DrawerContent className='h-[85%] px-4'>
+					<DrawerHeader className="text-left px-0">
+						<DrawerTitle>Поиск фильмов и сериалов</DrawerTitle>
+						<DrawerDescription>
+							Введите название фильма или сериала.
+						</DrawerDescription>
+					</DrawerHeader>
+					<div className='pb-2'>
+						<Input value={searchTerm} onChange={handleChange} className='' placeholder="Поиск по названию" />
+						<>
+							{isLoading ? (
+								<ScrollArea className="h-[500px] w-full border rounded-md mt-3 p-4">
+									<SkeletonLoading />
+								</ScrollArea>
+							) : searchResults !== null && searchResults.length > 0 ? (
+								<ScrollArea className="h-[500px] w-full border rounded-md mt-3 p-4">
+									{searchResults.map((movie) => (
+										<DialogTrigger asChild key={movie.filmId} className='grid'>
+											<Link key={movie.filmId} href={`/movie/${movie.filmId}`}>
+												<div className="grid grid-cols-[auto,1fr] mb-1 p-2 rounded hover:bg-muted/50">
+													<div>
+														<Image className='rounded' src={movie.posterUrl} width={35} height={51} alt={movie.nameRu} />
+													</div>
+													<div className='ms-3'><span className='font-medium'>{movie.nameRu}</span> <span>({movie.year})</span><br />{movie.rating ? movie.rating : ''}</div>
+												</div>
+											</Link>
+										</DialogTrigger>
+									))}
+								</ScrollArea>
+							) : emptyResults && emptyMessage}
+						</>
+					</div>
+				</DrawerContent>
+			</Drawer>
+		);
+	};
 };
 
 export default SearchMovie;

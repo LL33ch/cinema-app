@@ -9,6 +9,17 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import Link from 'next/link';
+import { useMediaQuery } from '@/lib/hooks';
+import {
+	Drawer,
+	DrawerClose,
+	DrawerContent,
+	DrawerDescription,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerTrigger,
+} from "@/components/ui/drawer"
 
 const formSchema = z.object({
 	password: z.string().min(1).max(4),
@@ -21,6 +32,7 @@ interface WatchMovieIframeProps {
 export function WatchMovieButton() {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [accessValue, setAccessValue] = useState<string | null>(null);
+	const isDesktop = useMediaQuery("(min-width: 768px)")
 
 	useEffect(() => {
 		const access = localStorage.getItem('access');
@@ -42,35 +54,77 @@ export function WatchMovieButton() {
 	}
 
 	if (!accessValue) {
-		return (
-			<Dialog>
-				<DialogTrigger asChild>
-					<Button className="my-5">
-						<MonitorPlay className="mr-2 h-4 w-4" />Смотреть
-					</Button>
-				</DialogTrigger>
-				<DialogContent>
-					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-							<FormField
-								control={form.control}
-								name="password"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Пароль</FormLabel>
-										<FormControl>
-											<Input type="password" placeholder="Введите пароль" {...field} />
-										</FormControl>
-										<FormMessage>{errorMessage}</FormMessage>
-									</FormItem>
-								)}
-							/>
-							<Button type="submit">Продолжить</Button>
-						</form>
-					</Form>
-				</DialogContent>
-			</Dialog>
-		);
+		if (isDesktop) {
+			return (
+				<Dialog>
+					<DialogTrigger asChild>
+						<Button className="my-5">
+							<MonitorPlay className="mr-2 h-4 w-4" />Смотреть
+						</Button>
+					</DialogTrigger>
+					<DialogContent>
+						<Form {...form}>
+							<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 h-full">
+								<FormField
+									control={form.control}
+									name="password"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Пароль</FormLabel>
+											<FormControl>
+												<Input type="password" placeholder="Введите пароль" {...field} />
+											</FormControl>
+											<FormMessage>{errorMessage}</FormMessage>
+										</FormItem>
+									)}
+								/>
+								<DrawerFooter>
+									<Button type='submit'>Продолжить</Button>
+									<DrawerClose asChild>
+										<Button variant="outline">Cancel</Button>
+									</DrawerClose>
+								</DrawerFooter>
+							</form>
+						</Form>
+					</DialogContent>
+				</Dialog>
+			);
+		} else {
+			return (
+				<Drawer>
+					<DrawerTrigger>
+						<Button className="my-5">
+							<MonitorPlay className="mr-2 h-4 w-4" />Смотреть
+						</Button>
+					</DrawerTrigger>
+					<DrawerContent className='px-4 mb-2'>
+						<DrawerHeader className="text-left px-0">
+							<DrawerTitle>Введите пароль чтобы продолжить</DrawerTitle>
+							<DrawerDescription>
+								Во избежании блокировок, общедоступный просмотр фильмов недоступен.
+							</DrawerDescription>
+						</DrawerHeader>
+						<Form {...form}>
+							<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+								<FormField
+									control={form.control}
+									name="password"
+									render={({ field }) => (
+										<FormItem>
+											<FormControl>
+												<Input type="password" placeholder="Введите пароль" {...field} />
+											</FormControl>
+											<FormMessage>{errorMessage}</FormMessage>
+										</FormItem>
+									)}
+								/>
+								<Button type="submit" className='w-full'>Продолжить</Button>
+							</form>
+						</Form>
+					</DrawerContent>
+				</Drawer>
+			);
+		}
 	} else {
 		return (
 			<Link href="#iframe">
