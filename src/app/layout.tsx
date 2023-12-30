@@ -1,85 +1,26 @@
 import type { Metadata } from 'next'
-import Link from "next/link"
 import './globals.css'
 import { ThemeProvider } from "@/components/ThemeProvider"
 import {
   NavigationMenu,
-  NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 import { ModeToggle } from '@/components/ui/ModeToggle'
 import { Button } from '@/components/ui/button'
-import { AlignJustify, Film, Github, Home, Trash2, Tv } from 'lucide-react'
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { AlignJustify, Popcorn } from 'lucide-react'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import React from 'react'
-import SearchMovie from '@/components/SearchMovies/SearchMovies'
 import { Toaster } from 'react-hot-toast'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import Footer from '@/components/Footer'
+import Navbar, { SheetNavbar } from '@/components/Navbar'
+import Link from 'next/link'
+import SearchMovie from '@/components/SearchMovies/SearchMovies'
 
 export const metadata: Metadata = {
   title: 'Cinema Next App by MrRobot (MrR504)',
   description: 'cinema-next-app',
 }
-
-const navbarLinks = [
-  {
-    id: 1,
-    href: "/",
-    label: (
-      <Button variant="ghost" className='font-bold' >
-        <Film className="mr-2 h-[1fr] w-[1fr]" /> Cinema-App
-      </Button>),
-  },
-  {
-    id: 2,
-    href: "/movies",
-    label: (<Button variant="link"><Film className="text-zinc-600 dark:text-current mr-2 h-4 w-4" /> Фильмы</Button>)
-  },
-  {
-    id: 3,
-    href: "/serials",
-    label: (<Button variant="link"><Tv className="text-zinc-600	dark:text-current mr-2 h-4 w-4" /> Сериалы</Button>)
-  },
-  {
-    id: 4,
-    href: "/tv-shows",
-    label: (<Button variant="link"><Tv className="text-zinc-600	dark:text-current mr-2 h-4 w-4" /> ТВ-Шоу</Button>)
-  }
-];
-
-
-const SheetNavbar = (props: any) => {
-  const [SheetCloseWrapper, shetCloseWrapperProps] = props.withSheetClose
-    ? [SheetClose, { asChild: true }]
-    : [React.Fragment, {}];
-
-  return (
-    <div className='flex flex-col font-medium mt-5'>
-      {navbarLinks.slice(1).map((item) => (
-        <SheetCloseWrapper {...shetCloseWrapperProps} key={item.id}>
-          <Link key={item.id} href={item.href}>
-            {item.label}
-          </Link>
-        </SheetCloseWrapper>
-      ))}
-    </div>
-  );
-};
-
-const Navbar = () => {
-  return (
-    <div className='flex'>
-      {navbarLinks.map((item) => (
-        <NavigationMenuItem key={item.id}>
-          <Link href={item.href} className='pe-2'>
-            {item.label}
-          </Link>
-        </NavigationMenuItem>
-      ))}
-    </div>
-  );
-};
 
 export default function RootLayout({
   children,
@@ -91,7 +32,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem
         >
           <div className='flex flex-col min-h-screen'>
@@ -103,10 +44,14 @@ export default function RootLayout({
                   </NavigationMenuList>
                 </NavigationMenu>
                 <Sheet>
-                  <SheetTrigger className='md:hidden w-fit' asChild><Button className='p-3' variant="outline"><AlignJustify /></Button></SheetTrigger>
+                  <SheetTrigger className='md:hidden w-fit' asChild>
+                    <Button className='p-3' variant="outline"><AlignJustify /></Button>
+                  </SheetTrigger>
                   <div className='flex sm:hidden ms-2'>
-                    <Link key={navbarLinks[0].id} href={navbarLinks[0].href}>
-                      {navbarLinks[0].label}
+                    <Link href='/'>
+                      <Button variant="ghost" className='font-bold text-foreground backdrop-blur' >
+                        <Popcorn className="mr-2 h-[1fr] w-[1fr] text-rose-600" /> Cinema-App
+                      </Button>
                     </Link>
                   </div>
                   <SheetContent side={'left'} >

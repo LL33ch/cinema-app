@@ -1,6 +1,6 @@
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from "@/components/ui/skeleton"
-import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 
 export default function LoadingMoviePage() {
 	return (

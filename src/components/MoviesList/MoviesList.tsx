@@ -16,12 +16,13 @@ export const MovieList: React.FC<MovieListProps> = ({ movies, title, category })
 
 	useEffect(() => {
 		const getViewMode: string | null = localStorage.getItem('view-mode');
+
 		if (getViewMode !== null) {
 			setViewMode(getViewMode);
 		} else {
 			setViewMode('list')
 		}
-	}, []);
+	}, [setViewMode]);
 
 	function changeViewMode(mode: string) {
 		if (mode === 'list') {
@@ -43,11 +44,11 @@ export const MovieList: React.FC<MovieListProps> = ({ movies, title, category })
 					</div>
 				)}
 				{category && (
-					<div className='mx-auto md:mx-0'>
+					<div className='mx-0'>
 						<SelectCategory category={category} />
 					</div>
 				)}
-				<TabsList className="hidden lg:grid w-fit grid-cols-2">
+				<TabsList className="grid w-fit grid-cols-2">
 					<TabsTrigger value="list" onClick={() => changeViewMode('list')}><StretchHorizontal className="h-4 w-4" /></TabsTrigger>
 					<TabsTrigger value="grid" onClick={() => changeViewMode('grid')}><Grid2X2 className="h-4 w-4" /></TabsTrigger>
 				</TabsList>

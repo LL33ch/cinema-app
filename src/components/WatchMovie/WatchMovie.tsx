@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { MonitorPlay } from 'lucide-react';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '../ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -19,7 +19,7 @@ import {
 	DrawerHeader,
 	DrawerTitle,
 	DrawerTrigger,
-} from "@/components/ui/drawer"
+} from "@/components/ui/drawer";
 
 const formSchema = z.object({
 	password: z.string().min(1).max(4),
@@ -31,12 +31,14 @@ interface WatchMovieIframeProps {
 
 export function WatchMovieButton() {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-	const [accessValue, setAccessValue] = useState<string | null>(null);
-	const isDesktop = useMediaQuery("(min-width: 768px)")
+	const [access, setAccess] = useState<string | null>(null);
+	const isDesktop = useMediaQuery("(min-width: 768px)");
 
 	useEffect(() => {
-		const access = localStorage.getItem('access');
-		setAccessValue(access);
+		const getAcess = localStorage.getItem('access');
+		if (getAcess === 'true') {
+			setAccess(getAcess);
+		}
 	}, []);
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -47,13 +49,14 @@ export function WatchMovieButton() {
 		if (values.password === '3120') {
 			setErrorMessage(null);
 			localStorage.setItem('access', 'true');
+			setAccess('true');
 			window.location.reload();
 		} else {
 			setErrorMessage('Неверный пароль');
 		}
 	}
 
-	if (!accessValue) {
+	if (!access) {
 		if (isDesktop) {
 			return (
 				<Dialog>
@@ -63,6 +66,12 @@ export function WatchMovieButton() {
 						</Button>
 					</DialogTrigger>
 					<DialogContent>
+						<DialogHeader>
+							<DialogTitle>Введите пароль чтобы продолжить</DialogTitle>
+							<DialogDescription>
+								Во избежании блокировок, общедоступный просмотр фильмов недоступен.
+							</DialogDescription>
+						</DialogHeader>
 						<Form {...form}>
 							<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 h-full">
 								<FormField
@@ -70,7 +79,6 @@ export function WatchMovieButton() {
 									name="password"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Пароль</FormLabel>
 											<FormControl>
 												<Input type="password" placeholder="Введите пароль" {...field} />
 											</FormControl>
@@ -78,12 +86,7 @@ export function WatchMovieButton() {
 										</FormItem>
 									)}
 								/>
-								<DrawerFooter>
-									<Button type='submit'>Продолжить</Button>
-									<DrawerClose asChild>
-										<Button variant="outline">Cancel</Button>
-									</DrawerClose>
-								</DrawerFooter>
+								<Button type='submit'>Продолжить</Button>
 							</form>
 						</Form>
 					</DialogContent>
@@ -92,7 +95,7 @@ export function WatchMovieButton() {
 		} else {
 			return (
 				<Drawer>
-					<DrawerTrigger>
+					<DrawerTrigger asChild>
 						<Button className="my-5">
 							<MonitorPlay className="mr-2 h-4 w-4" />Смотреть
 						</Button>
@@ -118,13 +121,18 @@ export function WatchMovieButton() {
 										</FormItem>
 									)}
 								/>
-								<Button type="submit" className='w-full'>Продолжить</Button>
+								<DrawerFooter className='px-0'>
+									<Button type='submit'>Продолжить</Button>
+									<DrawerClose asChild>
+										<Button variant="outline">Отмена</Button>
+									</DrawerClose>
+								</DrawerFooter>
 							</form>
 						</Form>
 					</DrawerContent>
 				</Drawer>
 			);
-		}
+		};
 	} else {
 		return (
 			<Link href="#iframe">
@@ -134,7 +142,7 @@ export function WatchMovieButton() {
 			</Link>
 		);
 	};
-}
+};
 
 export function WatchMovieIframe({ IframeSrc, kp_id }: WatchMovieIframeProps) {
 	const [accessValue, setAccessValue] = useState<string | null>(null);

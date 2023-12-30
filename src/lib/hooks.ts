@@ -1,26 +1,29 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react'
 
-export function useMediaQuery(query: string) {
-	const isClient = typeof window === 'object'; // Check if window is defined
+export function useMediaQuery(query: string): boolean {
+	const getMatches = (query: string): boolean => {
+		// Prevents SSR issues
+		if (typeof window !== 'undefined') {
+			return window.matchMedia(query).matches
+		}
+		return false
+	}
 
-	const mediaQuery = useMemo(() => isClient ? window.matchMedia(query) : null, [isClient, query]);
-	const [match, setMatch] = useState(isClient && mediaQuery ? mediaQuery.matches : false);
+	const [matches, setMatches] = useState<boolean>(getMatches(query))
+
+	function handleChange() {
+		setMatches(getMatches(query))
+	}
 
 	useEffect(() => {
-		if (!isClient || !mediaQuery) {
-			return;
-		}
-
-		const handleChange = () => {
-			setMatch(mediaQuery.matches);
-		};
-
-		mediaQuery.addListener(handleChange);
-
+		const matchMedia = window.matchMedia(query)
+		handleChange()
+		matchMedia.addEventListener('change', handleChange)
 		return () => {
-			mediaQuery.removeListener(handleChange);
-		};
-	}, [isClient, mediaQuery]);
+			matchMedia.removeEventListener('change', handleChange)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [query])
 
-	return match;
+	return matches
 }

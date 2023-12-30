@@ -1,11 +1,9 @@
 import { Movie, MovieHDVB } from '@/app/interfaces/movie.interface';
 import Image from 'next/image';
 import { Badge } from "@/components/ui/badge"
-import { Bookmark, Youtube } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
-import { Toggle } from '@/components/ui/toggle';
-import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import KinopoiskIcon from '/public/kinopoisk.svg';
 import ImdbIcon from '/public/imdb.svg';
 import {
@@ -20,8 +18,6 @@ import { Metadata } from 'next';
 import { getMovie, getSimilarMovies } from '@/app/api/api';
 import Notification from '@/components/Notification/Notification';
 import Trailer from '@/components/MovieTrailer';
-
-let dynamicTitle;
 
 export const metadata: Metadata = {
 	title: 'Фильмы',
@@ -47,8 +43,7 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 		const movie: Movie = MovieData.movie;
 		const MovieHDVB: MovieHDVB = MovieData.movieHDVB[0];
 
-		dynamicTitle = `${movie.nameRu} ${movie.nameOriginal ? `/ ${movie.nameOriginal}` : ''} (${movie.year})`;
-		metadata.title = dynamicTitle;
+		metadata.title = `${movie.nameRu} ${movie.nameOriginal ? `/ ${movie.nameOriginal}` : ''} (${movie.year})`;;
 
 		const SimilarMoviesData = await getSimilarMovies(kp_id);
 		const movies: Movies[] = SimilarMoviesData.items;
@@ -79,20 +74,17 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 								priority
 							/>
 							<div className='block sm:hidden absolute bottom-0 bg-gradient-to-t from-black via-black/70 p-3 pt-10 rounded w-full'>
-								<h1 className="text-3xl text-white font-bold">{movie.nameRu} ({movie.year})</h1>
+								<h1 className="text-3xl text-white font-bold">{movie.nameRu} {movie.year && `(${movie.year})`}</h1>
 								<h3 className='mt-3 text-stone-400'>{movie.nameOriginal}</h3>
 							</div>
 						</div>
 						<div>
 							<div className='hidden sm:block'>
-								<h1 className="text-4xl font-bold">{movie.nameRu} ({movie.year})</h1>
+								<h1 className="text-4xl font-bold">{movie.nameRu} {movie.year && `(${movie.year})`}</h1>
 								<h3 className='mt-3 text-stone-400'>{movie.nameOriginal}</h3>
 							</div>
 							<WatchMovieButton />
 							{(MovieHDVB && MovieHDVB.trailer) && (<Trailer trailer={MovieHDVB.trailer} MovieTitle={movie.nameRu} />)}
-							<Toggle variant="outline" aria-label="Toggle italic" className='ms-2'>
-								<Bookmark className="h-4 w-4" />
-							</Toggle>
 							<h4 className='dark:text-stone-300'>{movie.shortDescription}</h4>
 							<h2 className='my-3 font-medium'>О фильме:</h2>
 							<Table>

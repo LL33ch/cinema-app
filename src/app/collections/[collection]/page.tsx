@@ -62,7 +62,6 @@ export default async function Collection({ params }: { params: { collection: str
 
 	metadata.title = collectionName;
 
-
 	return (
 		<div className='container px-2'>
 			<MovieList movies={movies} category={collectionName} />
