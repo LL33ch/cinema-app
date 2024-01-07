@@ -7,7 +7,7 @@ import { Clapperboard, Film, Popcorn, Tv } from 'lucide-react';
 import { SheetClose } from './ui/sheet';
 import React from 'react';
 
-const SelectedStyle = 'text-rose-600 shadow-[0_0_30px_#e11d48]'
+const SelectedStyle = 'text-rose-600 shadow-[0_0_30px_#e11d48]';
 
 export default function Navbar() {
 	const pathname = usePathname();

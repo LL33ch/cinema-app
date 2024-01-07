@@ -20,6 +20,14 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "@/components/ui/drawer";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select"
+import Script from 'next/script';
 
 const formSchema = z.object({
 	password: z.string().min(1).max(4),
@@ -146,36 +154,64 @@ export function WatchMovieButton() {
 
 export function WatchMovieIframe({ IframeSrc, kp_id }: WatchMovieIframeProps) {
 	const [accessValue, setAccessValue] = useState<string | null>(null);
+	const [player, selectPlayer] = useState<string>('HDVB');
 
 	useEffect(() => {
 		const access = localStorage.getItem('access');
 		setAccessValue(access);
 	}, []);
 
+	useEffect(() => {
+	}, [player]);
+
 	if (accessValue) {
 		return (
-			<>
-				{/* <div className={`container mt-5 p-5 backdrop-blur-2xl bg-white/25 dark:bg-zinc-900/50 border rounded-lg`}>
+			<div id="iframe" className={`container mt-5 p-5 backdrop-blur-2xl bg-white/25 dark:bg-zinc-900/50 border rounded-lg`}>
+				<Select onValueChange={selectPlayer}>
+					<SelectTrigger className="w-[180px] mb-2">
+						<SelectValue placeholder="Выберите плеер" />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="HDVB" defaultValue="HDVB">
+							HDVB
+						</SelectItem>
+						<SelectItem value="VideoCDN">
+							VideoCDN
+						</SelectItem>
+						<SelectItem value="KinoBD">
+							KinoBD
+						</SelectItem>
+					</SelectContent>
+				</Select>
+				{(player === 'HDVB') &&
 					<iframe
-						id="iframe"
+						id="iframeHDVB"
 						src={IframeSrc}
 						width="100%"
 						height="700px"
 						allowFullScreen
 					></iframe>
-				</div> */}
-				<div className={`container mt-5 p-5 backdrop-blur-2xl bg-white/25 dark:bg-zinc-900/50 border rounded-lg`}>
+				}
+				{(player === 'VideoCDN') &&
 					<iframe
-						id="iframe"
+						id="iframeVideCDN"
 						src={`//06796622434375553.svetacdn.in/EARWdntqzBEw?kp_id=${kp_id}`}
 						width="100%"
 						height="700px"
 						allowFullScreen
 					></iframe>
-				</div>
-			</>
+				}
+				{(player === 'KinoBD') &&
+					<div>
+						<div data-kinopoisk={kp_id} id="kinobd"></div>
+						<Script src="https://kinobd.net/js/player_.js" strategy="lazyOnload" />
+					</div>
+				}
+			</div>
 		);
 	}
+
+	return null;
 };
 
 export default WatchMovieButton;
