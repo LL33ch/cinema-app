@@ -18,6 +18,9 @@ import { Metadata } from 'next';
 import { getMovie, getSimilarMovies } from '@/app/api/api';
 import Notification from '@/components/Notification/Notification';
 import Trailer from '@/components/MovieTrailer';
+import { Toggle } from '@/components/ui/toggle';
+import { Bookmark } from 'lucide-react';
+import BookmarkButton from '@/components/Bookmark/BookmarkButton';
 
 export const metadata: Metadata = {
 	title: 'Фильмы',
@@ -85,6 +88,7 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 							</div>
 							<WatchMovieButton />
 							{(MovieHDVB && MovieHDVB.trailer) && (<Trailer trailer={MovieHDVB.trailer} MovieTitle={movie.nameRu} />)}
+							<BookmarkButton movie={movie} />
 							<h4 className='dark:text-stone-300'>{movie.shortDescription}</h4>
 							<h2 className='my-3 font-medium'>О фильме:</h2>
 							<Table>

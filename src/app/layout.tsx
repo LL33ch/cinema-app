@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/navigation-menu"
 import { ModeToggle } from '@/components/ui/ModeToggle'
 import { Button } from '@/components/ui/button'
-import { AlignJustify, Popcorn } from 'lucide-react'
+import { AlignJustify, Bookmark, Popcorn } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import React from 'react'
 import { Toaster } from 'react-hot-toast'
@@ -60,6 +60,11 @@ export default function RootLayout({
                 </Sheet>
                 <div className='flex'>
                   <SearchMovie />
+                  <Link href='/bookmarks'>
+                    <Button variant="outline" size="icon" className='me-2'>
+                      <Bookmark className="h-4 w-4" />
+                    </Button>
+                  </Link>
                   <ModeToggle />
                 </div>
               </div>
@@ -69,6 +74,7 @@ export default function RootLayout({
             <Toaster position="bottom-left" />
           </div>
         </ThemeProvider>
+
         <SpeedInsights />
       </body>
     </html>
