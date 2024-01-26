@@ -1,4 +1,4 @@
-![CinemaAPP](https://mini.s-shot.ru/1920x1200/0/png/?https://cinema-app-two.vercel.app/)
+![CinemaAPP](https://mini.s-shot.ru/1920x1200/0/png/?https://cinema-app-mrr504.vercel.app/)
 
 ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
 
