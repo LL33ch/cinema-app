@@ -1,0 +1,27 @@
+{
+	"name": "Cinema Next App by MrRobot (MrR504)",
+	"short_name": "Cinema App",
+	"icons": [
+		{
+			"src": "/icons/android-chrome-192x192.jpg",
+			"sizes": "192x192",
+			"type": "image/jpg",
+			"purpose": "any maskable"
+		},
+		{
+			"src": "/icons/android-chrome-384x384.jpg",
+			"sizes": "384x384",
+			"type": "image/jpg"
+		},
+		{
+			"src": "/icons/icon-512x512.jpg",
+			"sizes": "512x512",
+			"type": "image/jpg"
+		}
+	],
+	"theme_color": "#09090b",
+	"background_color": "#09090b",
+	"start_url": "/",
+	"display": "standalone",
+	"orientation": "portrait"
+}

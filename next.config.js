@@ -1,9 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {}
 
-module.exports = nextConfig
+const withPWA = require('next-pwa')({
+	dest: 'public'
+})
 
-module.exports = {
+module.exports = withPWA(nextConfig)
+
+module.exports = withPWA({
 	webpack(config) {
 		// Grab the existing rule that handles SVG imports
 		const fileLoaderRule = config.module.rules.find((rule) =>
@@ -35,4 +39,4 @@ module.exports = {
 		domains: ['kinopoiskapiunofficial.tech', 'avatars.mds.yandex.net'],
 	},
 	// ...other config
-}
+})
