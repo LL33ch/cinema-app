@@ -4,34 +4,40 @@ import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { Toggle } from '../ui/toggle';
 import { Movie } from '@/app/interfaces/movie.interface';
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
+import PocketBase from 'pocketbase';
+
+const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL);
 
 export default function BookmarkButton({ movie }: { movie: Movie }) {
 	const [isAlreadyBookmarked, setIsAlreadyBookmarked] = useState(false);
+	const [currentBookmarks, setCurrentBookmarks] = useState<Movie | null>(null);
+
+	async function getUserBookmarks() {
+		try {
+			const records = await pb.collection('bookmarks').getFullList({
+				filter: `user = "${pb.authStore.model?.id}"`,
+				sort: '-created',
+				requestKey: null
+			});
+			if (records.length && records[0].movies) {
+				setCurrentBookmarks(records[0].movies);
+			} else {
+				setCurrentBookmarks(null);
+			}
+		} catch (error) {
+			toast.error('Ошибка при получении закладок:' + error);
+			setCurrentBookmarks(null);
+		}
+	}
 
 	useEffect(() => {
-		if (typeof window !== 'undefined') {
-			const currentBookmarks = localStorage.getItem('bookmarks');
-			const bookmarks = currentBookmarks ? JSON.parse(currentBookmarks) : [];
-			const alreadyBookmarked = bookmarks.some((bookmark: Movie) => bookmark.kinopoiskId === movie.kinopoiskId);
-			setIsAlreadyBookmarked(alreadyBookmarked);
-		}
-	}, [movie.kinopoiskId]);
+		getUserBookmarks();
+		console.log(currentBookmarks)
+	}, []);
 
-	function handleOnAddBookmark(movie: Movie) {
-		if (typeof window !== 'undefined') {
-			const currentBookmarks = localStorage.getItem('bookmarks');
-			let bookmarks = currentBookmarks ? JSON.parse(currentBookmarks) : [];
+	async function handleOnAddBookmark(movie: Movie) {
 
-			if (isAlreadyBookmarked) {
-				bookmarks = bookmarks.filter((bookmark: Movie) => bookmark.kinopoiskId !== movie.kinopoiskId);
-				localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-				setIsAlreadyBookmarked(false);
-			} else {
-				bookmarks.push(movie);
-				localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-				setIsAlreadyBookmarked(true);
-			}
-		}
 	}
 
 	return (

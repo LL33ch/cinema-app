@@ -1,17 +1,8 @@
-'use client'
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
 const currentYear = new Date().getFullYear();
 
 export default function Footer() {
-
-	const [accessValue, setAccessValue] = useState<string | null>(null);
-
-	useEffect(() => {
-		const access = localStorage.getItem('access');
-		setAccessValue(access);
-	}, []);
 
 	return (
 		<footer className="bg-white shadow dark:bg-zinc-900/70">
@@ -22,14 +13,6 @@ export default function Footer() {
 					<li>
 						<Link href="https://github.com/MrR504/cinema-app" target='_blank' className="hover:underline me-4 md:me-6">Github</Link>
 					</li>
-					{accessValue ? (
-						<li>
-							<span className="hover:underline me-4 md:me-6 cursor-pointer text-rose-600" onClick={() => {
-								localStorage.removeItem('access');
-								window.location.reload();
-							}}>Clear password</span>
-						</li>
-					) : <></>}
 				</ul>
 			</div>
 		</footer>

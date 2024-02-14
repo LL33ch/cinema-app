@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { MonitorPlay } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '../ui/input';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -28,43 +26,22 @@ import {
 	SelectValue,
 } from "@/components/ui/select"
 import Script from 'next/script';
+import PocketBase from 'pocketbase';
+import { toast } from 'sonner';
+import { useAuth } from '../Auth/AuthContext';
 
-const formSchema = z.object({
-	password: z.string().min(1).max(4),
-})
+const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL);
+
 interface WatchMovieIframeProps {
 	IframeSrc?: string;
 	kp_id?: number;
 }
 
 export function WatchMovieButton() {
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-	const [access, setAccess] = useState<string | null>(null);
 	const isDesktop = useMediaQuery("(min-width: 768px)");
+	const { isAccess } = useAuth();
 
-	useEffect(() => {
-		const getAcess = localStorage.getItem('access');
-		if (getAcess === 'true') {
-			setAccess(getAcess);
-		}
-	}, []);
-
-	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
-	})
-
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		if (values.password === '3120') {
-			setErrorMessage(null);
-			localStorage.setItem('access', 'true');
-			setAccess('true');
-			window.location.reload();
-		} else {
-			setErrorMessage('Неверный пароль');
-		}
-	}
-
-	if (!access) {
+	if (!isAccess) {
 		if (isDesktop) {
 			return (
 				<Dialog>
@@ -75,28 +52,11 @@ export function WatchMovieButton() {
 					</DialogTrigger>
 					<DialogContent>
 						<DialogHeader>
-							<DialogTitle>Введите пароль чтобы продолжить</DialogTitle>
+							<DialogTitle>Просмотр фильмов недоступен</DialogTitle>
 							<DialogDescription>
-								Во избежании блокировок, общедоступный просмотр фильмов недоступен.
+								Во избежании блокировок, общедоступный просмотр фильмов недоступен. Обратитесь к администратору.
 							</DialogDescription>
 						</DialogHeader>
-						<Form {...form}>
-							<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 h-full">
-								<FormField
-									control={form.control}
-									name="password"
-									render={({ field }) => (
-										<FormItem>
-											<FormControl>
-												<Input type="password" placeholder="Введите пароль" {...field} />
-											</FormControl>
-											<FormMessage>{errorMessage}</FormMessage>
-										</FormItem>
-									)}
-								/>
-								<Button type='submit'>Продолжить</Button>
-							</form>
-						</Form>
 					</DialogContent>
 				</Dialog>
 			);
@@ -110,33 +70,11 @@ export function WatchMovieButton() {
 					</DrawerTrigger>
 					<DrawerContent className='px-4 mb-2'>
 						<DrawerHeader className="text-left px-0">
-							<DrawerTitle>Введите пароль чтобы продолжить</DrawerTitle>
+							<DrawerTitle>Просмотр фильмов недоступен</DrawerTitle>
 							<DrawerDescription>
-								Во избежании блокировок, общедоступный просмотр фильмов недоступен.
+								Во избежании блокировок, общедоступный просмотр фильмов недоступен. Обратитесь к администратору.
 							</DrawerDescription>
 						</DrawerHeader>
-						<Form {...form}>
-							<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-								<FormField
-									control={form.control}
-									name="password"
-									render={({ field }) => (
-										<FormItem>
-											<FormControl>
-												<Input type="password" placeholder="Введите пароль" {...field} />
-											</FormControl>
-											<FormMessage>{errorMessage}</FormMessage>
-										</FormItem>
-									)}
-								/>
-								<DrawerFooter className='px-0'>
-									<Button type='submit'>Продолжить</Button>
-									<DrawerClose asChild>
-										<Button variant="outline">Отмена</Button>
-									</DrawerClose>
-								</DrawerFooter>
-							</form>
-						</Form>
 					</DrawerContent>
 				</Drawer>
 			);
@@ -153,18 +91,10 @@ export function WatchMovieButton() {
 };
 
 export function WatchMovieIframe({ IframeSrc, kp_id }: WatchMovieIframeProps) {
-	const [accessValue, setAccessValue] = useState<string | null>(null);
+	const { isAccess } = useAuth();
 	const [player, selectPlayer] = useState<string>('HDVB');
 
-	useEffect(() => {
-		const access = localStorage.getItem('access');
-		setAccessValue(access);
-	}, []);
-
-	useEffect(() => {
-	}, [player]);
-
-	if (accessValue) {
+	if (isAccess) {
 		return (
 			<div id="iframe" className={`container mt-5 p-5 backdrop-blur-2xl bg-white/25 dark:bg-zinc-900/50 border rounded-lg`}>
 				<Select onValueChange={selectPlayer}>

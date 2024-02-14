@@ -16,7 +16,6 @@ import { Movies } from '@/app/interfaces/similar-movies.interface';
 import { WatchMovieButton, WatchMovieIframe } from '@/components/WatchMovie/WatchMovie';
 import { Metadata } from 'next';
 import { getMovie, getSimilarMovies } from '@/app/api/api';
-import Notification from '@/components/Notification/Notification';
 import Trailer from '@/components/MovieTrailer';
 import { Toggle } from '@/components/ui/toggle';
 import { Bookmark } from 'lucide-react';
@@ -162,6 +161,6 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 			</>
 		);
 	} catch (error) {
-		return <Notification type="error" message={`Произошла ошибка на сервере: ${error}`} />
+		return
 	}
 }

@@ -7,8 +7,6 @@ export default async function Home() {
 	const movies: Movies[] = data.items;
 
 	return (
-		<div className='container px-2'>
-			<MovieList movies={movies} title='Фильмы' />
-		</div>
+		<MovieList movies={movies} title='Фильмы' />
 	);
 }

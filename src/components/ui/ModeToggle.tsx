@@ -10,7 +10,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import toast from 'react-hot-toast'
+import { toast } from "sonner"
 
 export function ModeToggle() {
 	const { setTheme } = useTheme()
@@ -38,10 +38,6 @@ export function ModeToggle() {
 							borderRadius: '10px',
 							background: '#101013',
 							color: '#fff',
-						},
-						iconTheme: {
-							primary: '#61d345',
-							secondary: '#101013',
 						},
 					});
 				}}>

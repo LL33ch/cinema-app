@@ -9,8 +9,6 @@ export default async function Home({ searchParams }: {
   const data: Root = await getTopPopularAll(searchParams?.page || 1);
   const movies: Movies[] = data.items;
   return (
-    <div className='container px-2'>
-      <MovieList movies={movies} category='Популярные' />
-    </div >
+    <MovieList movies={movies} category='Популярные' />
   );
 }
