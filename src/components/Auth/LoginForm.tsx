@@ -43,6 +43,8 @@ export function LoginForm() {
 		setIsLoading(true)
 		try {
 			const authData = await pb.collection('users').authWithPassword(values.login, values.password);
+			const TgBotMessage = `👤 Пользователь <b>${authData.record.username}</b> (${authData.record.email}) авторизировался.`
+			await fetch(`https://api.telegram.org/bot${process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${process.env.NEXT_PUBLIC_TELEGRAM_CHAT}&text=${TgBotMessage}&parse_mode=html`)
 			if (authData.record.access) {
 				setIsAccess(true)
 			}
