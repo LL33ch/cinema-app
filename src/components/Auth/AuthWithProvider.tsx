@@ -21,6 +21,8 @@ export default function AuthWithProvider() {
 				setIsLoading(false)
 			}, 5000)
 			const authData = await pb.collection('users').authWithOAuth2({ provider: 'google' });
+			const TgBotMessage = `👤 Пользователь <b>${authData.record.username}</b> (${authData.record.email}) авторизировался с помощью Google.`
+			await fetch(`https://api.telegram.org/bot${process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${process.env.NEXT_PUBLIC_TELEGRAM_CHAT}&text=${TgBotMessage}&parse_mode=html`)
 			if (authData.record.access) {
 				setIsAccess(true)
 			}
@@ -41,7 +43,7 @@ export default function AuthWithProvider() {
 					<span className="bg-background px-2 text-muted-foreground">Другие способы входа</span>
 				</div>
 			</div>
-			<Button type='button' variant='outline' className='w-full' onClick={() => handleAuth()} disabled={isLoading}><Image src="/google-logo.svg" height={17} width={17} alt='google-logo' className='me-2' />Google</Button>
+			<Button type='button' className='w-full' onClick={() => handleAuth()} disabled={isLoading}><Image src="/google-logo.svg" height={17} width={17} alt='google-logo' className='me-2' />Google</Button>
 		</>
 	)
 }

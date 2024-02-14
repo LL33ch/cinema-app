@@ -34,7 +34,6 @@ const formSchema = z.object({
 
 export function RegisterForm() {
 	const router = useRouter();
-	const { setIsAuthenticated, setIsAccess } = useAuth();
 	const [isLoading, setIsLoading] = useState(false)
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -58,7 +57,7 @@ export function RegisterForm() {
 		};
 		try {
 			const authData = await pb.collection('users').create(data);
-			const TgBotMessage = `👤 Пользователь <b>${authData.record.username}</b> (${authData.record.email}) зарегистрировался.`
+			const TgBotMessage = `👤 Пользователь <b>${values.username}</b> (${values.email}) зарегистрировался.`
 			await fetch(`https://api.telegram.org/bot${process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${process.env.NEXT_PUBLIC_TELEGRAM_CHAT}&text=${TgBotMessage}&parse_mode=html`)
 			toast.success('Успешная регистрация')
 			router.push('/auth/login')
@@ -83,7 +82,7 @@ export function RegisterForm() {
 					position: 'top-center',
 				});
 			} else {
-				toast.error('Произошла неизвестная ошибка.', {
+				toast.error('Произошла неизвестная ошибка.' + error, {
 					position: 'top-center',
 				});
 			}
