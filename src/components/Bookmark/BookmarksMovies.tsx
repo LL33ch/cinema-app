@@ -16,7 +16,6 @@ export default function BookmarksMovies() {
 		try {
 			const records = await pb.collection('bookmarks').getFullList({
 				filter: `user = "${pb.authStore.model?.id}"`,
-				sort: '-created',
 				requestKey: null
 			});
 			if (records.length && records[0].movies) {

@@ -21,6 +21,7 @@ import { toast } from "sonner"
 import { useAuth } from '@/components/Auth/AuthContext';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import AuthWithProvider from './AuthWithProvider';
 
 const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL);
 
@@ -29,7 +30,7 @@ const formSchema = z.object({
 	password: z.string().min(6)
 })
 
-export function AuthForm() {
+export function LoginForm() {
 	const router = useRouter();
 	const { setIsAuthenticated, setIsAccess } = useAuth();
 	const [isLoading, setIsLoading] = useState(false)
@@ -45,11 +46,11 @@ export function AuthForm() {
 			if (authData.record.access) {
 				setIsAccess(true)
 			}
-			toast.success('Успешная авторизация.')
+			toast.success('Успешная авторизация')
 			setIsAuthenticated(true);
 			router.push('/')
 		} catch (error) {
-			toast.error('Произошла ошибка при авторизации', {
+			toast.error('Неверный логин или пароль', {
 				position: 'top-center',
 			})
 			setIsLoading(false)
@@ -61,15 +62,14 @@ export function AuthForm() {
 			<div className="flex flex-col space-y-2 text-center"><h1 className="text-2xl font-semibold tracking-tight">Вход в аккаунт</h1></div>
 			<div className='grid mt-5'>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 						<FormField
 							control={form.control}
 							name="login"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Логин или почта</FormLabel>
 									<FormControl>
-										<Input {...field} />
+										<Input placeholder='Логин или почта' type='text' {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -80,16 +80,16 @@ export function AuthForm() {
 							name="password"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Пароль</FormLabel>
 									<FormControl>
-										<Input {...field} />
+										<Input placeholder='Пароль' type='password' {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
+						<AuthWithProvider />
 						<div className='grid gap-3'>
-							<span>Нет аккаунт? <Link href={'/register'} className='hover:underline text-zinc-300'>Зарегистрируйтесь</Link></span>
+							<span>Нет аккаунт? <Link href={'/auth/register'} className='hover:underline text-zinc-300'>Зарегистрируйтесь</Link></span>
 							<Button type="submit" disabled={isLoading}>{isLoading && (<Loader2 className="mr-2 h-4 w-4 animate-spin" />)} {isLoading ? 'Загрузка' : 'Вход'}</Button>
 						</div>
 					</form>

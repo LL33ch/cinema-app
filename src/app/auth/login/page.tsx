@@ -1,6 +1,6 @@
 'use client'
 import PocketBase from 'pocketbase';
-import { AuthForm } from '@/components/Auth/AuthForm';
+import { LoginForm } from '@/components/Auth/LoginForm';
 import { useRouter } from 'next/navigation'; // <-- Make sure this import is correct
 import { useEffect, useState } from 'react';
 
@@ -22,5 +22,5 @@ export default function AuthPage() {
 		return null;
 	}
 
-	return <AuthForm />;
+	return <LoginForm />;
 }

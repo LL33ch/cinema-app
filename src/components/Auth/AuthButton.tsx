@@ -27,6 +27,7 @@ export default function AuthButton() {
 		setIsAuthenticated(false);
 		setIsAccess(false);
 		pb.authStore.clear()
+		router.push('/')
 	}
 
 	useEffect(() => {
@@ -50,7 +51,7 @@ export default function AuthButton() {
 		);
 	} else {
 		return (
-			<Link href="/auth"><Button className='ms-2'>Вход</Button></Link>
+			<Link href="/auth/login"><Button className='ms-2'>Вход</Button></Link>
 		);
 	}
 }
