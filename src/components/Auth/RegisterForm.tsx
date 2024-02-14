@@ -21,6 +21,7 @@ import { toast } from "sonner"
 import { useAuth } from '@/components/Auth/AuthContext';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import AuthWithProvider from './AuthWithProvider';
 
 const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL);
 
@@ -144,9 +145,10 @@ export function RegisterForm() {
 							)}
 						/>
 						<div className='grid gap-3'>
-							<span>Уже есть аккаунт? <Link href={'/auth/login'} className='hover:underline text-zinc-300'>Войдите</Link></span>
+							<span>Уже есть аккаунт? <Link href={'/auth/login'} className='hover:underline text-zinc-500 dark:text-zinc-300'>Войдите</Link></span>
 							<Button type="submit" disabled={isLoading}>{isLoading && (<Loader2 className="mr-2 h-4 w-4 animate-spin" />)} {isLoading ? 'Загрузка' : 'Зарегистрироваться'}</Button>
 						</div>
+						<AuthWithProvider />
 					</form>
 				</Form>
 			</div>

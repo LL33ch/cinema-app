@@ -87,11 +87,11 @@ export function LoginForm() {
 								</FormItem>
 							)}
 						/>
-						<AuthWithProvider />
 						<div className='grid gap-3'>
-							<span>Нет аккаунт? <Link href={'/auth/register'} className='hover:underline text-zinc-300'>Зарегистрируйтесь</Link></span>
+							<span>Нет аккаунта? <Link href={'/auth/register'} className='hover:underline text-zinc-500 dark:text-zinc-300'>Зарегистрируйтесь</Link></span>
 							<Button type="submit" disabled={isLoading}>{isLoading && (<Loader2 className="mr-2 h-4 w-4 animate-spin" />)} {isLoading ? 'Загрузка' : 'Вход'}</Button>
 						</div>
+						<AuthWithProvider />
 					</form>
 				</Form>
 			</div>
