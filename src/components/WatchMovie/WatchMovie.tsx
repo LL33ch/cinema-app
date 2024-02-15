@@ -26,11 +26,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select"
 import Script from 'next/script';
-import PocketBase from 'pocketbase';
-import { toast } from 'sonner';
 import { useAuth } from '../Auth/AuthContext';
-
-const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL);
 
 interface WatchMovieIframeProps {
 	IframeSrc?: string;
@@ -39,7 +35,17 @@ interface WatchMovieIframeProps {
 
 export function WatchMovieButton() {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
-	const { isAccess } = useAuth();
+	const { isAccess, isAuthenticated } = useAuth();
+
+	if (!isAuthenticated) {
+		return (
+			<Link href="/auth/login">
+				<Button className="my-5">
+					<MonitorPlay className="mr-2 h-4 w-4" />Смотреть
+				</Button>
+			</Link>
+		)
+	}
 
 	if (!isAccess) {
 		if (isDesktop) {

@@ -12,48 +12,74 @@ interface AuthContextProps {
 	setIsAuthenticated: (value: boolean) => void;
 }
 
-// Значение по умолчанию контекста должно соответствовать интерфейсу AuthContextProps
 const AuthContext = createContext<AuthContextProps>({
 	isAuthenticated: null,
-	isAccess: false,
-	setIsAccess: () => { }, // пустая функция
-	setIsAuthenticated: () => { }, // пустая функция
+	isAccess: null,
+	setIsAccess: () => { },
+	setIsAuthenticated: () => { },
 });
 
-// Используйте <> для указания типа React дочерних компонентов
 interface AuthProviderProps {
 	children: ReactNode;
 }
 
-// Явно укажите, что AuthProvider является функциональным компонентом с определёнными props
+interface UserUpdateEvent {
+	action: string;
+	record: {
+		id: string;
+		collectionId: string;
+		collectionName: string;
+		username: string;
+		verified: boolean;
+		emailVisibility: boolean;
+		email: string;
+		created: string;
+		updated: string;
+		name: string;
+		avatar: string;
+		access: boolean;
+	};
+}
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-	// Инициализируйте состояние со значением, соответствующим типу boolean
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 	const [isAccess, setIsAccess] = useState<boolean | null>(null);
 
-	async function fetchUserAuthInfo() {
-		if (pb.authStore && pb.authStore.model) {
-			try {
-				const userAuthInfo = await pb.collection('users').getOne(pb.authStore.model.id, { requestKey: null });
-				if (userAuthInfo.access) {
-					setIsAccess(true);
-				}
-			} catch (error) {
-				toast.error("An error occurred while fetching the user auth info:" + error);
-			}
+	function handleUserUpdate(e: UserUpdateEvent) {
+		if (e.record && e.record.access) {
+			setIsAccess(true);
+		} else {
+			setIsAccess(false);
 		}
 	}
 
 	useEffect(() => {
-		fetchUserAuthInfo();
-	}, [])
+		async function initializeAccess() {
+			try {
+				const currentUser = pb.authStore.model;
+				if (currentUser) {
+					const userRecord = await pb.collection('users').getOne(currentUser.id, { requestKey: null });
+					setIsAccess(userRecord.access);
+				}
+			} catch (error) {
+				console.error('Ошибка при инициализации доступа пользователя:', error);
+				setIsAccess(false);
+			}
+		}
 
+		initializeAccess();
+
+		const userId = pb.authStore.model?.id;
+		if (userId && !isAccess) {
+			pb.collection('users').subscribe(userId, handleUserUpdate);
+			return () => { pb.collection('users').unsubscribe(userId); };
+		}
+	}, []);
 	const value = { isAuthenticated, isAccess, setIsAccess, setIsAuthenticated };
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-// Экспортируйте хук для использования контекста
 export function useAuth() {
 	return useContext(AuthContext);
 }

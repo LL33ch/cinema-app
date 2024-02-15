@@ -63,7 +63,7 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
 
 		return (
 			<>
-				<div className="absolute inset-0 -z-10 blur opacity-0 dark:opacity-20 bg-cover" style={{ backgroundImage: `url(${movie.coverUrl})` }} />
+				<div className="fixed inset-0 -z-10 blur opacity-0 dark:opacity-20 bg-cover" style={{ backgroundImage: `url(${movie.coverUrl})` }} />
 				<div className="container p-5 bg-white/25 dark:bg-zinc-900/80 border rounded-lg backdrop-blur-xl">
 					<div className='grid md:grid-cols-[1fr,2fr,auto] sm:grid-cols-[auto] gap-0 sm:gap-10 mb-5'>
 						<div className='relative'>
