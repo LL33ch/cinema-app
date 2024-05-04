@@ -57,8 +57,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 		async function initializeAccess() {
 			try {
 				const currentUser = pb.authStore.model;
+				const currentDate = new Date();
+				const offset = 3;
+				const localDate = new Date(currentDate.getTime() + offset * 3600 * 1000);
+				const dateISOString = localDate.toISOString();
 				if (currentUser) {
 					const userRecord = await pb.collection('users').getOne(currentUser.id, { requestKey: null });
+					await pb.collection('users').update(currentUser.id, {
+						online: dateISOString,
+					}, { requestKey: null });
 					setIsAccess(userRecord.access);
 				}
 			} catch (error) {

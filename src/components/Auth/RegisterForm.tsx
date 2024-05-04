@@ -57,7 +57,7 @@ export function RegisterForm() {
 		};
 		try {
 			const authData = await pb.collection('users').create(data);
-			const TgBotMessage = `👤 Пользователь <b>${values.username}</b> (${values.email}) зарегистрировался.`
+			const TgBotMessage = `👤 Пользователь <b>${values.username}</b> (${values.email}) зарегистрировался.<blockquote>${navigator.userAgent}</blockquote>`
 			await fetch(`https://api.telegram.org/bot${process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${process.env.NEXT_PUBLIC_TELEGRAM_CHAT}&text=${TgBotMessage}&parse_mode=html`)
 			toast.success('Успешная регистрация')
 			router.push('/auth/login')
