@@ -37,7 +37,6 @@ const formSchema = z.object({
 
 export function SettingsForm() {
 	const router = useRouter();
-	const { setUserData } = useAuth();
 	const [isLoading, setIsLoading] = useState(false)
 	const [isLoadingPage, setIsLoadingPage] = useState(true)
 
@@ -70,9 +69,8 @@ export function SettingsForm() {
 			return
 		}
 		try {
-			const updateUser = await pb.collection('users').update(pb.authStore.model?.id, data);
+			await pb.collection('users').update(pb.authStore.model?.id, data);
 			toast.success('Успешно')
-			setUserData(updateUser.username);
 			setIsLoading(false);
 			router.push('/settings')
 		} catch (error) {
