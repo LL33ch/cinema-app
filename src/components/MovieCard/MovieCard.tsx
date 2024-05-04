@@ -19,11 +19,11 @@ function getRatingColorClass(rating: number) {
 export const MovieCardList: React.FC<MovieCardProps> = ({ movie }) => {
 	return (
 		<div className="bg-cover bg-center rounded-lg h-fit transition-all hover:scale-[1.01] relative">
-			<Image src={movie.posterUrl} className='hidden dark:block rounded-lg object-cover absolute inset-0 w-full h-full' width={686} height={150} alt={movie.nameRu} />
+			<Image src={movie.posterUrl} className='hidden dark:block rounded-lg object-cover absolute inset-0' sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority={true} fill={true} alt={movie.nameRu} />
 			<Link href={`/movie/${movie.kinopoiskId}`} passHref>
 				<div className='dark:bg-zinc-900/50 bg-white dark:bg-gradient-to-r from-black via-black/70 dark:backdrop-brightness-50 dark:hover:backdrop-brightness-100 backdrop-blur-sm hover:backdrop-blur-none hover:border-zinc-600 p-5 border rounded-lg transition duration-150 ease-in-out hover:shadow-lg'>
 					<div className='grid grid-cols-[auto_1fr] md:grid-cols-[auto_1fr_auto] gap-5 h-full'>
-						<Image className='w-[110px] h-[156px]' src={movie.posterUrl} width={110} height={156} alt={movie.nameRu} priority />
+						<Image className='w-[110px] h-[156px] object-cover aspect-auto' src={movie.posterUrl} width={110} height={156} alt={movie.nameRu} priority={true} />
 						<div>
 							<h2 className='font-bold text-xl flex'>{movie.nameRu}
 								{movie.ratingKinopoisk && (<span className={`text-base flex md:hidden items-center font-medium ms-2 ${getRatingColorClass(movie.ratingKinopoisk)}`}><Star className='h-4 w-4 me-1' />{movie.ratingKinopoisk}</span>)}
