@@ -13,6 +13,8 @@ import { Metadata } from 'next';
 import { getMovie, getSimilarMovies } from '@/app/api/api';
 import Trailer from '@/components/MovieTrailer';
 import BookmarkButton from '@/components/Bookmark/BookmarkButton';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { ServerCrash } from 'lucide-react';
 
 export async function generateMetadata({
   params,
@@ -20,11 +22,20 @@ export async function generateMetadata({
   params: { kp_id: number };
 }): Promise<Metadata> {
   const kp_id = params.kp_id;
-  const MovieData = await getMovie(kp_id);
-  const movie: Movie = MovieData.movie;
-  return {
-    title: `${movie.nameRu} ${movie.nameOriginal ? `/ ${movie.nameOriginal}` : ''} (${movie.year})`,
-  };
+  try {
+    const MovieData = await getMovie(kp_id);
+    const movie: Movie = MovieData.movie;
+    return {
+      title: `${movie.nameRu} ${movie.nameOriginal ? `/ ${movie.nameOriginal}` : ''} (${
+        movie.year
+      })`,
+    };
+  } catch (error) {
+    console.error('Ошибка получения данных для метаданных:', error);
+    return {
+      title: 'Ошибка загрузки данных',
+    };
+  }
 }
 
 function getRatingColorClass(rating: number) {
@@ -51,21 +62,19 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
     const movies: Movies[] = SimilarMoviesData.items;
     const limitedMovies = movies.slice(0, 5);
 
-    const SimilarMoviesArray = limitedMovies.map((movie) => {
-      return (
-        <Link key={movie.filmId} href={`/movie/${movie.filmId}`} passHref>
-          <div className='dark:bg-zinc-900/50 hover:border-zinc-600 hover:shadow-lg p-4 border rounded-lg ease-in duration-200'>
-            <Image
-              className='rounded-lg object-cover transition-all hover:scale-105 aspect-[3/4]'
-              src={movie.posterUrl}
-              width={500}
-              height={700}
-              alt={movie.nameRu}
-            />
-          </div>
-        </Link>
-      );
-    });
+    const SimilarMoviesArray = limitedMovies.map((movie) => (
+      <Link key={movie.filmId} href={`/movie/${movie.filmId}`} passHref>
+        <div className='dark:bg-zinc-900/50 hover:border-zinc-600 hover:shadow-lg p-4 border rounded-lg ease-in duration-200'>
+          <Image
+            className='rounded-lg object-cover transition-all hover:scale-105 aspect-[3/4]'
+            src={movie.posterUrl}
+            width={500}
+            height={700}
+            alt={movie.nameRu}
+          />
+        </div>
+      </Link>
+    ));
 
     return (
       <>
@@ -114,12 +123,12 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
                   <TableRow>
                     <TableCell>Страна производства:</TableCell>
                     <TableCell>
-                      {movie.countries.map((Сountry) => Сountry.country).join(', ')}
+                      {movie.countries.map((country) => country.country).join(', ')}
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>Жанры:</TableCell>
-                    <TableCell>{movie.genres.map((Genre) => Genre.genre).join(', ')}</TableCell>
+                    <TableCell>{movie.genres.map((genre) => genre.genre).join(', ')}</TableCell>
                   </TableRow>
                   {movie.slogan != null && (
                     <TableRow>
@@ -156,11 +165,11 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
                     <TooltipProvider delayDuration={200}>
                       <Tooltip>
                         <TooltipTrigger>
-                          <Badge className='text-xl  text-stone-400 bg-stone-400/25 hover:bg-stone-400/30'>
+                          <Badge className='text-xl text-stone-400 bg-stone-400/25 hover:bg-stone-400/30'>
                             <ImdbIcon className='me-2 fill-stone-400' />
                             {movie.ratingImdb}
                           </Badge>
-                          <TooltipContent>Рейтинг IMDB: {movie.ratingKinopoisk}</TooltipContent>
+                          <TooltipContent>Рейтинг IMDB: {movie.ratingImdb}</TooltipContent>
                         </TooltipTrigger>
                       </Tooltip>
                     </TooltipProvider>
@@ -184,6 +193,12 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
       </>
     );
   } catch (error) {
-    return;
+    return (
+      <Alert variant='destructive'>
+        <ServerCrash className='h-4 w-4' />
+        <AlertTitle>Произошла ошибка</AlertTitle>
+        <AlertDescription>Ошибка получения данных о фильме, попробуйте позже.</AlertDescription>
+      </Alert>
+    );
   }
 }
