@@ -15,7 +15,6 @@ import SearchMovie from '@/components/SearchMovies/SearchMovies';
 import AuthButton from '@/components/Auth/AuthButton';
 import { Toaster } from '@/components/ui/sonner';
 import { AuthProvider } from '@/components/Auth/AuthContext';
-import NextTopLoader from 'nextjs-toploader';
 
 export const metadata: Metadata = {
   title: 'Cinema Next App by MrRobot (MrR504)',
