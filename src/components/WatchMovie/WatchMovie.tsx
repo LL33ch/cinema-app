@@ -11,9 +11,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
 import Link from 'next/link';
 import { useMediaQuery } from '@/lib/hooks';
 import {
@@ -26,20 +23,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import Script from 'next/script';
 import { useAuth } from '../Auth/AuthContext';
 import KinoboxPlayer from '../Players/KinoboxPlayer';
 
@@ -49,8 +32,6 @@ interface WatchMovieIframeProps {
 }
 
 export function WatchMovieButton() {
-  const isDesktop = useMediaQuery('(min-width: 768px)');
-  const { isAccess, isAuthenticated } = useAuth();
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const { isAccess, isAuthenticated } = useAuth();
 

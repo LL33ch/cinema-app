@@ -1,13 +1,11 @@
 import { Movie, MovieHDVB } from '@/app/interfaces/movie.interface';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
-import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import KinopoiskIcon from '/public/kinopoisk.svg';
 import ImdbIcon from '/public/imdb.svg';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Movies } from '@/app/interfaces/similar-movies.interface';
 import { WatchMovieButton, WatchMovieIframe } from '@/components/WatchMovie/WatchMovie';
@@ -31,16 +29,6 @@ function getRatingColorClass(rating: number) {
     default:
       return 'fill-stone-400 text-stone-400 bg-stone-400/25 hover:bg-stone-400/30';
   }
-  switch (true) {
-    case rating >= 8:
-      return 'fill-amber-500 text-amber-500 bg-amber-500/25 hover:bg-amber-500/30';
-    case rating > 7:
-      return 'fill-green-500 text-green-500 bg-green-500/25 hover:bg-green-500/30';
-    case rating <= 7:
-      return 'fill-stone-400 text-stone-400 bg-stone-400/25 hover:bg-stone-400/30';
-    default:
-      return 'fill-stone-400 text-stone-400 bg-stone-400/25 hover:bg-stone-400/30';
-  }
 }
 
 export default async function MoviePage({ params }: { params: { kp_id: number } }) {
@@ -48,7 +36,6 @@ export default async function MoviePage({ params }: { params: { kp_id: number } 
   const MovieData = await getMovie(kp_id);
   const movie: Movie = MovieData.movie;
   console.log(movie);
-  //   const MovieHDVB: MovieHDVB = MovieData.movieHDVB[0];
 
   metadata.title = `${movie.nameRu} ${movie.nameOriginal ? `/ ${movie.nameOriginal}` : ''} (${
     movie.year
