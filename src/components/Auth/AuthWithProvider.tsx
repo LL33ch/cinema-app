@@ -21,7 +21,7 @@ export default function AuthWithProvider() {
 				setIsLoading(false)
 			}, 5000)
 			const authData = await pb.collection('users').authWithOAuth2({ provider: 'google' });
-			const TgBotMessage = `👤 Пользователь <b>${authData.record.username}</b> (${authData.record.email}) авторизировался с помощью <b>Google</b>.`
+			const TgBotMessage = `👤 Пользователь <b>${authData.record.username}</b> (${authData.record.email}) авторизировался с помощью <b>Google</b>.<blockquote>${navigator.userAgent}</blockquote>`
 			await fetch(`https://api.telegram.org/bot${process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${process.env.NEXT_PUBLIC_TELEGRAM_CHAT}&text=${TgBotMessage}&parse_mode=html`)
 			if (authData.record.access) {
 				setIsAccess(true)
