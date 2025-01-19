@@ -1,4 +1,5 @@
 'use client';
+'use client';
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { MonitorPlay } from 'lucide-react';
@@ -32,6 +33,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import Script from 'next/script';
 import { useAuth } from '../Auth/AuthContext';
 import KinoboxPlayer from '../Players/KinoboxPlayer';
@@ -44,7 +51,19 @@ interface WatchMovieIframeProps {
 export function WatchMovieButton() {
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const { isAccess, isAuthenticated } = useAuth();
+  const isDesktop = useMediaQuery('(min-width: 768px)');
+  const { isAccess, isAuthenticated } = useAuth();
 
+  if (!isAuthenticated) {
+    return (
+      <Link href='/auth/login'>
+        <Button className='my-5'>
+          <MonitorPlay className='mr-2 h-4 w-4' />
+          Смотреть
+        </Button>
+      </Link>
+    );
+  }
   if (!isAuthenticated) {
     return (
       <Link href='/auth/login'>

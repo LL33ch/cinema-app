@@ -1,19 +1,19 @@
 import { Movie, MovieHDVB } from '@/app/interfaces/movie.interface';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import KinopoiskIcon from '/public/kinopoisk.svg';
 import ImdbIcon from '/public/imdb.svg';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Movies } from '@/app/interfaces/similar-movies.interface';
 import { WatchMovieButton, WatchMovieIframe } from '@/components/WatchMovie/WatchMovie';
 import { Metadata } from 'next';
 import { getMovie, getSimilarMovies } from '@/app/api/api';
 import Trailer from '@/components/MovieTrailer';
-import { Toggle } from '@/components/ui/toggle';
-import { Bookmark } from 'lucide-react';
 import BookmarkButton from '@/components/Bookmark/BookmarkButton';
 
 export const metadata: Metadata = {
@@ -21,6 +21,16 @@ export const metadata: Metadata = {
 };
 
 function getRatingColorClass(rating: number) {
+  switch (true) {
+    case rating >= 8:
+      return 'fill-amber-500 text-amber-500 bg-amber-500/25 hover:bg-amber-500/30';
+    case rating > 7:
+      return 'fill-green-500 text-green-500 bg-green-500/25 hover:bg-green-500/30';
+    case rating <= 7:
+      return 'fill-stone-400 text-stone-400 bg-stone-400/25 hover:bg-stone-400/30';
+    default:
+      return 'fill-stone-400 text-stone-400 bg-stone-400/25 hover:bg-stone-400/30';
+  }
   switch (true) {
     case rating >= 8:
       return 'fill-amber-500 text-amber-500 bg-amber-500/25 hover:bg-amber-500/30';
