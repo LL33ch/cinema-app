@@ -50,8 +50,8 @@ export const MovieList: React.FC<MovieListProps> = ({ movies, title, category })
 				)}
 				{movies && (
 					<TabsList className="grid w-fit grid-cols-2">
-						<TabsTrigger value="list" onClick={() => changeViewMode('list')}><StretchHorizontal className="h-4 w-4" /></TabsTrigger>
-						<TabsTrigger value="grid" onClick={() => changeViewMode('grid')}><Grid2X2 className="h-4 w-4" /></TabsTrigger>
+						<TabsTrigger value="list" aria-label="list" onClick={() => changeViewMode('list')}><StretchHorizontal className="h-4 w-4" /></TabsTrigger>
+						<TabsTrigger value="grid" aria-label="grid" onClick={() => changeViewMode('grid')}><Grid2X2 className="h-4 w-4" /></TabsTrigger>
 					</TabsList>
 				)}
 			</div>
